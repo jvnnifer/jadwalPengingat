@@ -100,7 +100,8 @@ class HomePage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => InputFieldJadwal()),
+                            builder: (context) => InputFieldJadwal(),
+                          ),
                         );
                       },
                       child: Container(
