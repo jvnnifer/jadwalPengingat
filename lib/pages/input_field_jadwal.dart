@@ -44,7 +44,14 @@ class InputFieldJadwalState extends State<InputFieldJadwal> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Pilih Hari'),
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Pilih Hari'),
+              SizedBox(height: 8),
+              Divider(color: Colors.grey[400], thickness: 1.5),
+            ],
+          ),
           content: Container(
             height: 200,
             child: SingleChildScrollView(
