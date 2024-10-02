@@ -58,7 +58,12 @@ class SideBar extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.w500),
             ),
             tileColor: activePage == 'reminder' ? Colors.grey[300] : null,
-            onTap: () {},
+            onTap: () {
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => InputFieldJadwal()),
+              // );
+            },
           ),
           ListTile(
             leading: Icon(Icons.calendar_today),

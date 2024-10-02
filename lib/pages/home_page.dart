@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'sidebar.dart';
+import 'input_field_jadwal.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -95,7 +96,13 @@ class HomePage extends StatelessWidget {
                         elevation: 0,
                         backgroundColor: Colors.blue[100],
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => InputFieldJadwal()),
+                        );
+                      },
                       child: Container(
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
