@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:jadwal_pelajaran_app/pages/home_page.dart';
+import 'jadwal_pelajaran.dart';
 
 class SideBar extends StatelessWidget {
   final String activePage;
@@ -28,7 +30,12 @@ class SideBar extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.w500),
             ),
             tileColor: activePage == 'home' ? Colors.grey[300] : null,
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage()),
+              );
+            },
           ),
           ListTile(
             leading: Icon(Icons.calendar_month),
@@ -37,7 +44,12 @@ class SideBar extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.w500),
             ),
             tileColor: activePage == 'schedule' ? Colors.grey[300] : null,
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => JadwalPelajaranPage()),
+              );
+            },
           ),
           ListTile(
             leading: Icon(Icons.notifications),
