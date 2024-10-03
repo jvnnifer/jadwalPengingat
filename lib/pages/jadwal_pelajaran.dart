@@ -2,14 +2,122 @@ import 'package:flutter/material.dart';
 import 'sidebar.dart';
 import 'input_field_jadwal.dart';
 import 'dart:ui';
+import 'tugas_mapel.dart';
 
 class JadwalPelajaranPage extends StatefulWidget {
+  final List<Mapel> mapelList;
+  JadwalPelajaranPage({required this.mapelList});
+
   @override
   _JadwalPelajaran createState() => _JadwalPelajaran();
 }
 
 class _JadwalPelajaran extends State<JadwalPelajaranPage> {
   int selectedDayIndex = 0;
+  Widget _buildCourseList(List<Mapel> mapelList) {
+    return Column(
+      children: mapelList.map(
+        (mapel) {
+          return Card(
+            elevation: 0,
+            color: mapel.warna,
+            margin: EdgeInsets.all(10),
+            child: Padding(
+              padding: EdgeInsets.only(left: 20, top: 10, bottom: 10),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            mapel.judul,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(Icons.calendar_today, color: Colors.white),
+                                SizedBox(width: 8),
+                                Text(
+                                  mapel.hari,
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 15),
+                                ),
+                              ],
+                            ),
+                            // Bagian Kanan
+                            Row(
+                              children: [
+                                Icon(Icons.access_time, color: Colors.white),
+                                SizedBox(
+                                    width: 8), // Jarak antara ikon dan teks
+                                Text(
+                                  '${mapel.waktuMulai} - ${mapel.waktuSelesai}',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 15),
+                                ),
+                              ],
+                            ),
+                            SizedBox(width: 10),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            mapel.pengajar,
+                            style: TextStyle(color: Colors.white, fontSize: 15),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: 1.5,
+                    height: 100,
+                    color: Colors.white,
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          mapel.ruang,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ).toList(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,109 +205,14 @@ class _JadwalPelajaran extends State<JadwalPelajaranPage> {
                   );
                 }).map((item) {
                   return Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 20), // Jarak antar item
+                    padding: EdgeInsets.symmetric(horizontal: 20),
                     child: item,
                   );
                 }).toList(),
               ),
             ),
           ),
-          Card(
-            elevation: 0,
-            color: Colors.blue[700],
-            margin: EdgeInsets.all(10),
-            child: Padding(
-              padding: EdgeInsets.only(left: 20, top: 10, bottom: 10),
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Mobile Programming',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(Icons.calendar_today, color: Colors.white),
-                                SizedBox(width: 8),
-                                Text(
-                                  'Rabu',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 15),
-                                ),
-                              ],
-                            ),
-                            // Bagian Kanan
-                            Row(
-                              children: [
-                                Icon(Icons.access_time, color: Colors.white),
-                                SizedBox(
-                                    width: 8), // Jarak antara ikon dan teks
-                                Text(
-                                  '9.30 - 11.10',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 15),
-                                ),
-                              ],
-                            ),
-                            SizedBox(width: 10),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Pak Wilson',
-                            style: TextStyle(color: Colors.white, fontSize: 15),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    width: 1.5,
-                    height: 100,
-                    color: Colors.white,
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          'R704',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          _buildCourseList(widget.mapelList),
         ],
       ),
       floatingActionButton: Stack(

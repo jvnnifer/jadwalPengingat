@@ -4,7 +4,7 @@ import 'sidebar.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui';
-import 'tugas.dart';
+import 'tugas_mapel.dart';
 
 class PengingatOtomatisPage extends StatefulWidget {
   final List<Tugas> tugasList;

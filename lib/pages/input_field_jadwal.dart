@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:jadwal_pelajaran_app/pages/jadwal_pelajaran.dart';
 import 'input_field_satuan/input_field_satuan.dart';
 import 'package:intl/intl.dart';
+import 'tugas_mapel.dart';
 
 class InputFieldJadwal extends StatefulWidget {
   const InputFieldJadwal({Key? key}) : super(key: key);
@@ -138,6 +140,20 @@ class InputFieldJadwalState extends State<InputFieldJadwal> {
     );
   }
 
+  Color _getColor(int index) {
+    switch (index) {
+      case 0:
+        return Colors.blue;
+      case 1:
+        return Colors.pink;
+      case 2:
+        return Colors.orange;
+      default:
+        return Colors.grey;
+    }
+  }
+
+  List<Mapel> mapelList = [];
   _validateData() {
     if (_titlecontroller.text.isEmpty ||
         _classcontroller.text.isEmpty ||
@@ -149,6 +165,28 @@ class InputFieldJadwalState extends State<InputFieldJadwal> {
           backgroundColor: Colors.red,
         ),
       );
+    } else {
+      Mapel newMapel = Mapel(
+        judul: _titlecontroller.text,
+        hari: _selectedDay,
+        pengajar: _teachercontroller.text,
+        ruang: _classcontroller.text,
+        waktuMulai: _startTime,
+        waktuSelesai: _endTime,
+        warna: _getColor(_selectedColor),
+      );
+
+      setState(() {
+        mapelList.add(newMapel);
+      });
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => JadwalPelajaranPage(mapelList: mapelList)),
+      );
+      _titlecontroller.clear();
+      _teachercontroller.clear();
+      _classcontroller.clear();
     }
   }
 
@@ -174,15 +212,6 @@ class InputFieldJadwalState extends State<InputFieldJadwal> {
                 hint: 'Masukkan nama mapel',
                 controller: _titlecontroller,
               ),
-              // Untuk tambah tanggal di add tugas
-              // InputFieldSatuan(
-              //   judul: 'Tanggal',
-              //   hint: DateFormat.yMd().format(_selectedDate),
-              //   widget: IconButton(
-              //     onPressed: () => _getDateFromUser(context),
-              //     icon: Icon(Icons.calendar_month_outlined, color: Colors.grey),
-              //   ),
-              // ),
               InputFieldSatuan(
                 judul: 'Hari',
                 hint: _selectedDay,
