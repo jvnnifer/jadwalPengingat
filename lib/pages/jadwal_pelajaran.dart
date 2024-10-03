@@ -13,7 +13,9 @@ class _JadwalPelajaran extends State<JadwalPelajaranPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SideBar(activePage: 'schedule'),
+      drawer: SideBar(
+        activePage: 'schedule',
+      ),
       appBar: AppBar(
         title: Text('Jadwal Pelajaran'),
       ),

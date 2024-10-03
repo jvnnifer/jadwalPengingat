@@ -9,7 +9,9 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SideBar(activePage: 'home'),
+      drawer: SideBar(
+        activePage: 'home',
+      ),
       appBar: AppBar(
         title: Text('Beranda'),
       ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'input_field_satuan/input_field_satuan.dart';
 import 'package:intl/intl.dart';
+import 'tugas.dart';
+import 'pengingat_otomatis.dart';
 
 class InputFieldPengingat extends StatefulWidget {
   const InputFieldPengingat({Key? key}) : super(key: key);
@@ -11,6 +13,7 @@ class InputFieldPengingat extends StatefulWidget {
 
 class InputFieldPengingatState extends State<InputFieldPengingat> {
   final TextEditingController _titlecontroller = TextEditingController();
+  final TextEditingController _notecontroller = TextEditingController();
 
   DateTime _selectedDate = DateTime.now();
   String _startTime = "9:30";
@@ -92,16 +95,86 @@ class InputFieldPengingatState extends State<InputFieldPengingat> {
     );
   }
 
+  Color _getColor(int index) {
+    switch (index) {
+      case 0:
+        return Colors.blue;
+      case 1:
+        return Colors.pink;
+      case 2:
+        return Colors.orange;
+      default:
+        return Colors.grey;
+    }
+  }
+
+  int _selectedRemind = 5;
+  List<int> reminderList = [
+    5,
+    10,
+    15,
+    20,
+  ];
+
+  List<Tugas> tugasList = [];
+
   _validateData() {
     if (_titlecontroller.text.isEmpty) {
-      print("ValidateData Called");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Semua bagian harus diisi'),
           backgroundColor: Colors.red,
         ),
       );
+    } else {
+      Tugas newTugas = Tugas(
+        judul: _titlecontroller.text,
+        note: _notecontroller.text,
+        tanggal: DateFormat.yMd().format(_selectedDate),
+        waktuMulai: _startTime,
+        waktuSelesai: _endTime,
+        warna: _getColor(_selectedColor),
+      );
+
+      setState(() {
+        tugasList.add(newTugas);
+      });
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => PengingatOtomatisPage(tugasList: tugasList)),
+      );
+      _titlecontroller.clear();
+      _notecontroller.clear();
     }
+  }
+
+  Widget _buildTaskList() {
+    return Column(
+      children: tugasList.map((tugas) {
+        return Card(
+          color: tugas.warna,
+          margin: EdgeInsets.all(10),
+          child: Padding(
+            padding: EdgeInsets.all(15),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  tugas.judul,
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 10),
+                Text(tugas.note),
+                SizedBox(height: 10),
+                Text('Tanggal: ${tugas.tanggal}'),
+                Text('Waktu: ${tugas.waktuMulai} - ${tugas.waktuSelesai}'),
+              ],
+            ),
+          ),
+        );
+      }).toList(),
+    );
   }
 
   @override
@@ -129,6 +202,7 @@ class InputFieldPengingatState extends State<InputFieldPengingat> {
               InputFieldSatuan(
                 judul: 'Note',
                 hint: 'Masukkan note',
+                controller: _notecontroller,
               ),
               // Untuk tambah tanggal di add tugas
               InputFieldSatuan(
@@ -170,6 +244,23 @@ class InputFieldPengingatState extends State<InputFieldPengingat> {
                     ),
                   ),
                 ],
+              ),
+              InputFieldSatuan(
+                judul: 'Ingatkan saya',
+                hint: "$_selectedRemind menit sebelum",
+                widget: DropdownButton(
+                  icon: Icon(Icons.keyboard_arrow_down, color: Colors.grey),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _selectedRemind = int.parse(newValue!);
+                    });
+                  },
+                  items:
+                      reminderList.map<DropdownMenuItem<String>>((int value) {
+                    return DropdownMenuItem<String>(
+                        value: value.toString(), child: Text(value.toString()));
+                  }).toList(),
+                ),
               ),
               Text(
                 'Pilih Warna',

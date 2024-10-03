@@ -4,17 +4,115 @@ import 'sidebar.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui';
+import 'tugas.dart';
 
 class PengingatOtomatisPage extends StatefulWidget {
+  final List<Tugas> tugasList;
+  PengingatOtomatisPage({required this.tugasList});
+
   @override
   _PengingatOtomatis createState() => _PengingatOtomatis();
 }
 
 class _PengingatOtomatis extends State<PengingatOtomatisPage> {
+  Widget _buildTaskList(List<Tugas> tugasList) {
+    return Column(
+      children: tugasList.map(
+        (tugas) {
+          return Card(
+            elevation: 0,
+            color: tugas.warna,
+            margin: EdgeInsets.all(10),
+            child: Padding(
+              padding: EdgeInsets.only(left: 20, top: 10, bottom: 10),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 4,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            tugas.judul,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(Icons.calendar_month, color: Colors.white),
+                                SizedBox(width: 8),
+                                Text(
+                                  '${tugas.tanggal}',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 15),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Icon(Icons.access_time, color: Colors.white),
+                                SizedBox(width: 8),
+                                Text(
+                                  '${tugas.waktuMulai} - ${tugas.waktuSelesai}',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 15),
+                                ),
+                              ],
+                            ),
+                            SizedBox(width: 10),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            tugas.note,
+                            style: TextStyle(color: Colors.white, fontSize: 15),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(height: 2),
+                        Icon(Icons.circle, size: 8, color: Colors.white),
+                        SizedBox(height: 2),
+                        Icon(Icons.circle, size: 8, color: Colors.white),
+                        SizedBox(height: 2),
+                        Icon(Icons.circle, size: 8, color: Colors.white),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ).toList(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SideBar(activePage: 'reminder'),
+      drawer: SideBar(
+        activePage: 'reminder',
+      ),
       appBar: AppBar(
         title: Text('Pengingat'),
       ),
@@ -68,95 +166,7 @@ class _PengingatOtomatis extends State<PengingatOtomatisPage> {
               ),
             ),
           ),
-          Card(
-            elevation: 0,
-            color: Colors.blue[700],
-            margin: EdgeInsets.all(10),
-            child: Padding(
-              padding: EdgeInsets.only(left: 20, top: 10, bottom: 10),
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 4,
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Tugas 1 Aplikasi A',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(Icons.calendar_month, color: Colors.white),
-                                SizedBox(width: 8),
-                                Text(
-                                  '09/10/2024',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 15),
-                                ),
-                              ],
-                            ),
-                            // Bagian Kanan
-                            Row(
-                              children: [
-                                Icon(Icons.access_time, color: Colors.white),
-                                SizedBox(
-                                    width: 8), // Jarak antara ikon dan teks
-                                Text(
-                                  '9.30 - 11.10',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 15),
-                                ),
-                              ],
-                            ),
-                            SizedBox(width: 10),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Tugas Kelompok membuat aplikasi mobile mengenai perencanaan',
-                            style: TextStyle(color: Colors.white, fontSize: 15),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Icon(Icons.circle, size: 8, color: Colors.white),
-                        SizedBox(width: 4),
-                        Icon(Icons.circle, size: 8, color: Colors.white),
-                        SizedBox(width: 4),
-                        Icon(Icons.circle, size: 8, color: Colors.white),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          _buildTaskList(widget.tugasList),
         ],
       ),
       floatingActionButton: Stack(
