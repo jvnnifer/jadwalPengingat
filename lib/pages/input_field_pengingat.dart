@@ -149,34 +149,6 @@ class InputFieldPengingatState extends State<InputFieldPengingat> {
     }
   }
 
-  Widget _buildTaskList() {
-    return Column(
-      children: tugasList.map((tugas) {
-        return Card(
-          color: tugas.warna,
-          margin: EdgeInsets.all(10),
-          child: Padding(
-            padding: EdgeInsets.all(15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  tugas.judul,
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 10),
-                Text(tugas.note),
-                SizedBox(height: 10),
-                Text('Tanggal: ${tugas.tanggal}'),
-                Text('Waktu: ${tugas.waktuMulai} - ${tugas.waktuSelesai}'),
-              ],
-            ),
-          ),
-        );
-      }).toList(),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
