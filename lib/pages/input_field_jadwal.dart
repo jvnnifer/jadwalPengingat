@@ -14,25 +14,9 @@ class InputFieldJadwalState extends State<InputFieldJadwal> {
   final TextEditingController _teachercontroller = TextEditingController();
   final TextEditingController _classcontroller = TextEditingController();
 
-  DateTime _selectedDate = DateTime.now();
   String _selectedDay = 'Senin';
   String _startTime = "9:30";
   String _endTime = DateFormat("hh:mm").format(DateTime.now()).toString();
-
-  Future<void> _getDateFromUser(BuildContext context) async {
-    DateTime? _pickerDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2015),
-      lastDate: DateTime(2125),
-    );
-
-    if (_pickerDate != null) {
-      setState(() {
-        _selectedDate = _pickerDate;
-      });
-    }
-  }
 
   Future<void> _getDayFromUser(BuildContext context) async {
     List<String> daysOfWeek = [
