@@ -41,7 +41,6 @@ class InputFieldJadwalState extends State<InputFieldJadwal> {
       'Rabu',
       'Kamis',
       'Jumat',
-      'Sabtu',
     ];
 
     String? _pickerDay = await showDialog<String>(

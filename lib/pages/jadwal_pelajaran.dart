@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'sidebar.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:intl/intl.dart';
+import 'input_field_jadwal.dart';
 import 'dart:ui';
 
 class JadwalPelajaranPage extends StatefulWidget {
@@ -10,6 +11,7 @@ class JadwalPelajaranPage extends StatefulWidget {
 }
 
 class _JadwalPelajaran extends State<JadwalPelajaranPage> {
+  int selectedDayIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +29,7 @@ class _JadwalPelajaran extends State<JadwalPelajaranPage> {
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                'Hari ini',
+                'Hari',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 25,
@@ -35,35 +37,71 @@ class _JadwalPelajaran extends State<JadwalPelajaranPage> {
               ),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.only(left: 20, bottom: 10),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                DateFormat.yMMMd().format(DateTime.now()),
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 20,
-                  color: Colors.grey,
-                ),
-              ),
-            ),
-          ),
           Container(
-            child: Padding(
-              padding: EdgeInsets.all(10),
-              child: DatePicker(
-                DateTime.now(),
-                height: 100,
-                width: 80,
-                initialSelectedDate: DateTime.now(),
-                selectionColor: Colors.blue.shade700,
-                selectedTextColor: Colors.white,
-                dateTextStyle: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.grey[400],
-                ),
+            height: 100,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: List.generate(5, (index) {
+                  String day;
+                  switch (index) {
+                    case 0:
+                      day = 'Senin';
+                      break;
+                    case 1:
+                      day = 'Selasa';
+                      break;
+                    case 2:
+                      day = 'Rabu';
+                      break;
+                    case 3:
+                      day = 'Kamis';
+                      break;
+                    case 4:
+                      day = 'Jumat';
+                      break;
+                    default:
+                      day = '';
+                  }
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        selectedDayIndex =
+                            index; // Set indeks hari yang dipilih
+                      });
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          day,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                            color: selectedDayIndex == index
+                                ? Colors.blue.shade700
+                                : Colors.grey[400],
+                          ),
+                        ),
+                        if (selectedDayIndex ==
+                            index) // Tanda jika hari dipilih
+                          Container(
+                            margin: EdgeInsets.only(top: 5),
+                            height: 3,
+                            width: 50,
+                            color: Colors.blue.shade700,
+                          ),
+                      ],
+                    ),
+                  );
+                }).map((item) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 20), // Jarak antar item
+                    child: item,
+                  );
+                }).toList(),
               ),
             ),
           ),
@@ -241,7 +279,11 @@ class _JadwalPelajaran extends State<JadwalPelajaranPage> {
                   ],
                 ).then((value) {
                   if (value == 'add_subject') {
-                    // Tambah pelajaran
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => InputFieldJadwal()),
+                    );
                   } else if (value == 'edit_subject') {
                     // Edit pelajaran
                   } else if (value == 'delete_subject') {

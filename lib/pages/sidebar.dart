@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jadwal_pelajaran_app/pages/home_page.dart';
+import 'package:jadwal_pelajaran_app/pages/pengingat_otomatis.dart';
 import 'jadwal_pelajaran.dart';
 
 class SideBar extends StatelessWidget {
@@ -59,10 +60,11 @@ class SideBar extends StatelessWidget {
             ),
             tileColor: activePage == 'reminder' ? Colors.grey[300] : null,
             onTap: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => InputFieldJadwal()),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => PengingatOtomatisPage()),
+              );
             },
           ),
           ListTile(
