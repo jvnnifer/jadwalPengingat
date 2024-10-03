@@ -10,8 +10,12 @@ class InputFieldJadwal extends StatefulWidget {
 }
 
 class InputFieldJadwalState extends State<InputFieldJadwal> {
+  final TextEditingController _titlecontroller = TextEditingController();
+  final TextEditingController _teachercontroller = TextEditingController();
+  final TextEditingController _classcontroller = TextEditingController();
+
   DateTime _selectedDate = DateTime.now();
-  String _selectedDay = 'Pilih hari';
+  String _selectedDay = 'Senin';
   String _startTime = "9:30";
   String _endTime = DateFormat("hh:mm").format(DateTime.now()).toString();
 
@@ -57,11 +61,23 @@ class InputFieldJadwalState extends State<InputFieldJadwal> {
             child: SingleChildScrollView(
               child: Column(
                 children: daysOfWeek.map((day) {
-                  return ListTile(
-                    title: Text(day),
+                  bool isSelected = day == _selectedDay;
+
+                  return GestureDetector(
                     onTap: () {
                       Navigator.pop(context, day);
                     },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: isSelected
+                            ? Colors.blue.withOpacity(0.1)
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: ListTile(
+                        title: Text(day),
+                      ),
+                    ),
                   );
                 }).toList(),
               ),
@@ -138,6 +154,20 @@ class InputFieldJadwalState extends State<InputFieldJadwal> {
     );
   }
 
+  _validateData() {
+    if (_titlecontroller.text.isEmpty ||
+        _classcontroller.text.isEmpty ||
+        _teachercontroller.text.isEmpty) {
+      print("ValidateData Called");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Semua bagian harus diisi'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -156,7 +186,10 @@ class InputFieldJadwalState extends State<InputFieldJadwal> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               InputFieldSatuan(
-                  judul: 'Nama mapel', hint: 'Masukkan nama mapel'),
+                judul: 'Nama mapel',
+                hint: 'Masukkan nama mapel',
+                controller: _titlecontroller,
+              ),
               // Untuk tambah tanggal di add tugas
               // InputFieldSatuan(
               //   judul: 'Tanggal',
@@ -207,18 +240,27 @@ class InputFieldJadwalState extends State<InputFieldJadwal> {
                 ],
               ),
               InputFieldSatuan(
-                  judul: 'Pengajar', hint: 'Masukkan nama pengajar'),
-              InputFieldSatuan(judul: 'Ruang', hint: 'Masukkan ruang'),
+                judul: 'Pengajar',
+                hint: 'Masukkan nama pengajar',
+                controller: _teachercontroller,
+              ),
+              InputFieldSatuan(
+                judul: 'Ruang',
+                hint: 'Masukkan ruang',
+                controller: _classcontroller,
+              ),
               Text(
                 'Pilih Warna',
                 style: TextStyle(fontWeight: FontWeight.w600),
               ),
               SizedBox(height: 10),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   _colorPallete(),
-                  CreateButton(label: 'Buat Mapel', onTap: () => null),
+                  CreateButton(
+                      label: 'Buat Mapel', onTap: () => _validateData()),
                 ],
               )
             ],
@@ -240,23 +282,22 @@ class CreateButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
+    return ElevatedButton(
+      onPressed: onTap,
+      style: ElevatedButton.styleFrom(
+        elevation: 0,
         padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-        decoration: BoxDecoration(
-          color: Colors.blue,
+        backgroundColor: Colors.blue,
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
-        child: Center(
-          child: Text(
-            label,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
         ),
       ),
     );
