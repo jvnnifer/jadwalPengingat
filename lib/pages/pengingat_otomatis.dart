@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:jadwal_pelajaran_app/pages/input_field_pengingat.dart';
 import 'sidebar.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:intl/intl.dart';
-import 'input_field_jadwal.dart';
 import 'dart:ui';
 
 class PengingatOtomatisPage extends StatefulWidget {
@@ -77,13 +77,13 @@ class _PengingatOtomatis extends State<PengingatOtomatisPage> {
               child: Row(
                 children: [
                   Expanded(
-                    flex: 2,
+                    flex: 4,
                     child: Column(
                       children: [
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            'Mobile Programming',
+                            'Tugas 1 Aplikasi A',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -98,10 +98,10 @@ class _PengingatOtomatis extends State<PengingatOtomatisPage> {
                           children: [
                             Row(
                               children: [
-                                Icon(Icons.calendar_today, color: Colors.white),
+                                Icon(Icons.calendar_month, color: Colors.white),
                                 SizedBox(width: 8),
                                 Text(
-                                  'Rabu',
+                                  '09/10/2024',
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 15),
                                 ),
@@ -129,7 +129,7 @@ class _PengingatOtomatis extends State<PengingatOtomatisPage> {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            'Pak Wilson',
+                            'Tugas Kelompok membuat aplikasi mobile mengenai perencanaan',
                             style: TextStyle(color: Colors.white, fontSize: 15),
                           ),
                         ),
@@ -139,23 +139,17 @@ class _PengingatOtomatis extends State<PengingatOtomatisPage> {
                       ],
                     ),
                   ),
-                  Container(
-                    width: 1.5,
-                    height: 100,
-                    color: Colors.white,
-                  ),
                   Expanded(
                     flex: 1,
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text(
-                          'R704',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
-                        )
+                        Icon(Icons.circle, size: 8, color: Colors.white),
+                        SizedBox(width: 4),
+                        Icon(Icons.circle, size: 8, color: Colors.white),
+                        SizedBox(width: 4),
+                        Icon(Icons.circle, size: 8, color: Colors.white),
                       ],
                     ),
                   ),
@@ -177,7 +171,7 @@ class _PengingatOtomatis extends State<PengingatOtomatisPage> {
                   position: RelativeRect.fromLTRB(300.0, 600.0, 0.0, 0.0),
                   items: [
                     PopupMenuItem(
-                      value: 'add_subject',
+                      value: 'add_reminder',
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -198,7 +192,7 @@ class _PengingatOtomatis extends State<PengingatOtomatisPage> {
                       ),
                     ),
                     PopupMenuItem(
-                      value: 'edit_subject',
+                      value: 'edit_reminder',
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -219,7 +213,7 @@ class _PengingatOtomatis extends State<PengingatOtomatisPage> {
                       ),
                     ),
                     PopupMenuItem(
-                      value: 'delete_subject',
+                      value: 'delete_reminder',
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -241,15 +235,15 @@ class _PengingatOtomatis extends State<PengingatOtomatisPage> {
                     ),
                   ],
                 ).then((value) {
-                  if (value == 'add_subject') {
+                  if (value == 'add_reminder') {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => InputFieldJadwal()),
+                          builder: (context) => InputFieldPengingat()),
                     );
-                  } else if (value == 'edit_subject') {
+                  } else if (value == 'edit_reminder') {
                     // Edit pelajaran
-                  } else if (value == 'delete_subject') {
+                  } else if (value == 'delete_reminder') {
                     // Hapus pelajaran
                   }
                 });

@@ -14,7 +14,8 @@ class InputFieldPengingatState extends State<InputFieldPengingat> {
 
   DateTime _selectedDate = DateTime.now();
   String _startTime = "9:30";
-  String _endTime = DateFormat("hh:mm").format(DateTime.now()).toString();
+  String _endTime =
+      DateFormat("HH:mm", "id_ID").format(DateTime.now()).toString();
 
   Future<void> _getDateFromUser(BuildContext context) async {
     DateTime? _pickerDate = await showDatePicker(
@@ -121,8 +122,8 @@ class InputFieldPengingatState extends State<InputFieldPengingat> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               InputFieldSatuan(
-                judul: 'Nama mapel',
-                hint: 'Masukkan nama mapel',
+                judul: 'Nama tugas',
+                hint: 'Masukkan nama tugas',
                 controller: _titlecontroller,
               ),
               InputFieldSatuan(
@@ -183,7 +184,7 @@ class InputFieldPengingatState extends State<InputFieldPengingat> {
                   CreateButton(
                       label: 'Buat Pengingat', onTap: () => _validateData()),
                 ],
-              )
+              ),
             ],
           ),
         ),

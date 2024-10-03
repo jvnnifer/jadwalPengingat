@@ -16,7 +16,8 @@ class InputFieldJadwalState extends State<InputFieldJadwal> {
 
   String _selectedDay = 'Senin';
   String _startTime = "9:30";
-  String _endTime = DateFormat("hh:mm").format(DateTime.now()).toString();
+  String _endTime =
+      DateFormat("HH:mm", "id_ID").format(DateTime.now()).toString();
 
   Future<void> _getDayFromUser(BuildContext context) async {
     List<String> daysOfWeek = [
