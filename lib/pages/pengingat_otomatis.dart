@@ -7,7 +7,7 @@ import 'dart:ui';
 import 'tugas_mapel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
-// import 'notification_service.dart';
+import 'notification_service.dart';
 
 class PengingatOtomatisPage extends StatefulWidget {
   final List<Tugas>? tugasList;
@@ -19,14 +19,15 @@ class PengingatOtomatisPage extends StatefulWidget {
 
 class _PengingatOtomatis extends State<PengingatOtomatisPage> {
   late List<Tugas> _tugasList;
-  // late NotificationService _notificationService;
+  late NotificationService _notificationService;
 
   @override
   void initState() {
     super.initState();
     _tugasList = widget.tugasList ?? [];
-    // _notificationService = NotificationService();
-    // _notificationService.initNotification();
+    _notificationService = NotificationService();
+    _notificationService.initNotification();
+    _scheduleAllNotifications();
     _loadTugasFromPreferences();
   }
 
@@ -40,6 +41,31 @@ class _PengingatOtomatis extends State<PengingatOtomatisPage> {
             .toList();
       });
     }
+  }
+
+  void _scheduleAllNotifications() {
+    for (int index = 0; index < _tugasList.length; index++) {
+      final DateTime scheduleTime = _convertToDateTime(
+          _tugasList[index].tanggal, _tugasList[index].waktuMulai);
+
+      // Menjadwalkan notifikasi
+      _notificationService.scheduleNotification(
+        title: 'Penginga: ${_tugasList[index].judul}',
+        body: 'Jangan lupa mengerjakan tugas',
+        scheduledNotificationDateTime: scheduleTime,
+      );
+    }
+  }
+
+  DateTime _convertToDateTime(String tanggal, String waktuMulai) {
+    final DateTime parsedDate = DateFormat.yMd().parse(tanggal);
+
+    final List<String> timeParts = waktuMulai.split(':');
+    final int hour = int.parse(timeParts[0]); // Jam
+    final int minute = int.parse(timeParts[1]); // Menit
+
+    return DateTime(
+        parsedDate.year, parsedDate.month, parsedDate.day, hour, minute);
   }
 
   Future<void> _deleteAllTasksFromPreferences() async {
@@ -111,12 +137,6 @@ class _PengingatOtomatis extends State<PengingatOtomatisPage> {
             child: ListView.builder(
               itemCount: _tugasList.length,
               itemBuilder: (context, index) {
-                // _notificationService.scheduleNotification(
-                //   title: 'Pengingat: ${_tugasList[index].judul}',
-                //   body: 'Jangan lupa mengerjakan tugas',
-                //   scheduledNotificationDateTime:
-                //       DateTime.parse('${_tugasList[index].waktuMulai}'),
-                // );
                 return Card(
                   elevation: 0,
                   color: _tugasList[index].warna,
