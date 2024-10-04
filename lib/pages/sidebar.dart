@@ -2,11 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:jadwal_pelajaran_app/pages/home_page.dart';
 import 'package:jadwal_pelajaran_app/pages/pengingat_otomatis.dart';
 import 'jadwal_pelajaran.dart';
+import 'tugas_mapel.dart';
 
 class SideBar extends StatelessWidget {
   final String activePage;
+  final List<Tugas>? tugasList;
 
-  const SideBar({super.key, required this.activePage});
+  const SideBar({
+    super.key,
+    required this.activePage,
+    this.tugasList,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +72,9 @@ class SideBar extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => PengingatOtomatisPage()),
+                    builder: (context) => PengingatOtomatisPage(
+                          tugasList: tugasList,
+                        )),
               );
             },
           ),

@@ -7,11 +7,21 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 class InputFieldPengingat extends StatefulWidget {
+  final List<Tugas>? tugasList;
+
+  const InputFieldPengingat({super.key, this.tugasList});
   @override
   InputFieldPengingatState createState() => InputFieldPengingatState();
 }
 
 class InputFieldPengingatState extends State<InputFieldPengingat> {
+  late List<Tugas> tugasList;
+  @override
+  void initState() {
+    super.initState();
+    _loadTugasFromPreferences();
+  }
+
   final TextEditingController _titlecontroller = TextEditingController();
   final TextEditingController _notecontroller = TextEditingController();
 
@@ -20,7 +30,6 @@ class InputFieldPengingatState extends State<InputFieldPengingat> {
   String _endTime =
       DateFormat("HH:mm", "id_ID").format(DateTime.now()).toString();
 
-  List<Tugas> tugasList = [];
   int _selectedColor = 0;
 
   Future<void> _getDateFromUser(BuildContext context) async {
@@ -38,12 +47,24 @@ class InputFieldPengingatState extends State<InputFieldPengingat> {
     }
   }
 
-  Future<void> _saveTugasToPreferences(List<Tugas> tugasList) async {
+  Future<void> _loadTugasFromPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? tugasJsonList = prefs.getStringList('tugas_list');
+    if (tugasJsonList != null) {
+      setState(() {
+        tugasList = tugasJsonList
+            .map((json) => Tugas.fromJson(jsonDecode(json)))
+            .toList();
+      });
+    } else {
+      tugasList = [];
+    }
+  }
 
+  Future<void> _saveTugasToPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> tugasJsonList =
         tugasList.map((tugas) => jsonEncode(tugas.toJson())).toList();
-
     await prefs.setStringList('tugas_list', tugasJsonList);
   }
 
@@ -168,12 +189,14 @@ class InputFieldPengingatState extends State<InputFieldPengingat> {
         tugasList.add(newTugas);
       });
 
-      await _saveTugasToPreferences(tugasList);
+      await _saveTugasToPreferences();
 
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => PengingatOtomatisPage()),
+        MaterialPageRoute(
+            builder: (context) => PengingatOtomatisPage(tugasList: tugasList)),
       );
+
       _titlecontroller.clear();
       _notecontroller.clear();
     }

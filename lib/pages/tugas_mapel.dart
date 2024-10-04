@@ -24,11 +24,10 @@ class Tugas {
       'tanggal': tanggal,
       'waktuMulai': waktuMulai,
       'waktuSelesai': waktuSelesai,
-      'warna': warna,
+      'warna': warna.value,
     };
   }
 
-  // Membuat objek Tugas dari JSON
   static Tugas fromJson(Map<String, dynamic> json) {
     return Tugas(
       judul: json['judul'],
@@ -36,7 +35,7 @@ class Tugas {
       tanggal: json['tanggal'],
       waktuMulai: json['waktuMulai'],
       waktuSelesai: json['waktuSelesai'],
-      warna: json['warna'],
+      warna: Color(json['warna']),
     );
   }
 }

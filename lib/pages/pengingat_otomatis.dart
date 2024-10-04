@@ -9,16 +9,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 class PengingatOtomatisPage extends StatefulWidget {
+  final List<Tugas>? tugasList;
+
+  PengingatOtomatisPage({super.key, this.tugasList});
   @override
   _PengingatOtomatis createState() => _PengingatOtomatis();
 }
 
 class _PengingatOtomatis extends State<PengingatOtomatisPage> {
-  late List<Tugas> _tugasList = [];
+  late List<Tugas> _tugasList;
 
   @override
   void initState() {
     super.initState();
+    _tugasList = widget.tugasList ?? [];
     _loadTugasFromPreferences();
   }
 
@@ -32,98 +36,6 @@ class _PengingatOtomatis extends State<PengingatOtomatisPage> {
             .toList();
       });
     }
-  }
-
-  Widget _buildTaskList(List<Tugas> tugasList) {
-    return Column(
-      children: tugasList.map(
-        (tugas) {
-          return Card(
-            elevation: 0,
-            color: tugas.warna,
-            margin: EdgeInsets.all(10),
-            child: Padding(
-              padding: EdgeInsets.only(left: 20, top: 10, bottom: 10),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 4,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            tugas.judul,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20),
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(Icons.calendar_month, color: Colors.white),
-                                SizedBox(width: 8),
-                                Text(
-                                  '${tugas.tanggal}',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 15),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Icon(Icons.access_time, color: Colors.white),
-                                SizedBox(width: 8),
-                                Text(
-                                  '${tugas.waktuMulai} - ${tugas.waktuSelesai}',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 15),
-                                ),
-                              ],
-                            ),
-                            SizedBox(width: 10),
-                          ],
-                        ),
-                        SizedBox(height: 10),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            tugas.note,
-                            style: TextStyle(color: Colors.white, fontSize: 15),
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(height: 2),
-                        Icon(Icons.circle, size: 8, color: Colors.white),
-                        SizedBox(height: 2),
-                        Icon(Icons.circle, size: 8, color: Colors.white),
-                        SizedBox(height: 2),
-                        Icon(Icons.circle, size: 8, color: Colors.white),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      ).toList(),
-    );
   }
 
   @override
@@ -185,7 +97,100 @@ class _PengingatOtomatis extends State<PengingatOtomatisPage> {
               ),
             ),
           ),
-          _buildTaskList(_tugasList),
+          Expanded(
+            child: ListView.builder(
+              itemCount: _tugasList.length,
+              itemBuilder: (context, index) {
+                return Card(
+                  elevation: 0,
+                  color: _tugasList[index].warna,
+                  margin: EdgeInsets.all(10),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 20, top: 10, bottom: 10),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 4,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  _tugasList[index].judul,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(Icons.calendar_month,
+                                          color: Colors.white),
+                                      SizedBox(width: 8),
+                                      Text(
+                                        '${_tugasList[index].tanggal}',
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 15),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.access_time,
+                                          color: Colors.white),
+                                      SizedBox(width: 8),
+                                      Text(
+                                        '${_tugasList[index].waktuMulai} - ${_tugasList[index].waktuSelesai}',
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 15),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(width: 10),
+                                ],
+                              ),
+                              SizedBox(height: 10),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  _tugasList[index].note,
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 15),
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(height: 2),
+                              Icon(Icons.circle, size: 8, color: Colors.white),
+                              SizedBox(height: 2),
+                              Icon(Icons.circle, size: 8, color: Colors.white),
+                              SizedBox(height: 2),
+                              Icon(Icons.circle, size: 8, color: Colors.white),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
         ],
       ),
       floatingActionButton: Stack(
