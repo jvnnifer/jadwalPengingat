@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'input_field_satuan/input_field_satuan.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/data/latest.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
+
 import 'tugas_mapel.dart';
 import 'pengingat_otomatis.dart';
 
@@ -17,19 +15,6 @@ class InputFieldPengingat extends StatefulWidget {
 class InputFieldPengingatState extends State<InputFieldPengingat> {
   final TextEditingController _titlecontroller = TextEditingController();
   final TextEditingController _notecontroller = TextEditingController();
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
-  void _initializeNotifications() async {
-    tz.initializeTimeZones();
-
-    const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
-
-    final InitializationSettings initializationSettings =
-        InitializationSettings(android: initializationSettingsAndroid);
-
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-  }
 
   DateTime _selectedDate = DateTime.now();
   String _startTime = "9:30";
@@ -143,51 +128,6 @@ class InputFieldPengingatState extends State<InputFieldPengingat> {
         parsedDate.year, parsedDate.month, parsedDate.day, hour, minute);
   }
 
-  void scheduleNotification(DateTime waktuMulai, String judulTugas) async {
-    await flutterLocalNotificationsPlugin.zonedSchedule(
-      0,
-      'Reminder: $judulTugas',
-      'Jangan lupa mengerjakan tugas!',
-      _convertTimeToTZDateTime(waktuMulai),
-      const NotificationDetails(
-        android: AndroidNotificationDetails(
-          'task_reminder_channel',
-          'Task Reminder Notifications',
-          importance: Importance.max,
-          priority: Priority.high,
-          showWhen: true,
-        ),
-      ),
-      androidAllowWhileIdle: true,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.wallClockTime,
-      matchDateTimeComponents: DateTimeComponents.time,
-    );
-  }
-
-  tz.TZDateTime _convertTimeToTZDateTime(DateTime waktuMulai) {
-    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-    if (waktuMulai.isBefore(DateTime.now())) {
-      return tz.TZDateTime(
-        tz.local,
-        now.year,
-        now.month,
-        now.day + 1,
-        waktuMulai.hour,
-        waktuMulai.minute,
-      );
-    }
-
-    return tz.TZDateTime(
-      tz.local,
-      waktuMulai.year,
-      waktuMulai.month,
-      waktuMulai.day,
-      waktuMulai.hour,
-      waktuMulai.minute,
-    );
-  }
-
   _validateData() {
     if (_titlecontroller.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -219,9 +159,6 @@ class InputFieldPengingatState extends State<InputFieldPengingat> {
         tugasList.add(newTugas);
       });
 
-      DateTime taskDateTime =
-          _convertToDateTime(newTugas.tanggal, newTugas.waktuMulai);
-      scheduleNotification(taskDateTime, newTugas.judul);
       Navigator.push(
         context,
         MaterialPageRoute(
