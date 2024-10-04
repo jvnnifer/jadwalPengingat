@@ -5,16 +5,35 @@ import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui';
 import 'tugas_mapel.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 class PengingatOtomatisPage extends StatefulWidget {
-  final List<Tugas> tugasList;
-  PengingatOtomatisPage({required this.tugasList});
-
   @override
   _PengingatOtomatis createState() => _PengingatOtomatis();
 }
 
 class _PengingatOtomatis extends State<PengingatOtomatisPage> {
+  late List<Tugas> _tugasList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadTugasFromPreferences();
+  }
+
+  Future<void> _loadTugasFromPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? tugasJsonList = prefs.getStringList('tugas_list');
+    if (tugasJsonList != null) {
+      setState(() {
+        _tugasList = tugasJsonList
+            .map((json) => Tugas.fromJson(jsonDecode(json)))
+            .toList();
+      });
+    }
+  }
+
   Widget _buildTaskList(List<Tugas> tugasList) {
     return Column(
       children: tugasList.map(
@@ -166,7 +185,7 @@ class _PengingatOtomatis extends State<PengingatOtomatisPage> {
               ),
             ),
           ),
-          _buildTaskList(widget.tugasList),
+          _buildTaskList(_tugasList),
         ],
       ),
       floatingActionButton: Stack(

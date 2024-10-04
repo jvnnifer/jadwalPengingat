@@ -20,6 +20,8 @@ class InputFieldJadwalState extends State<InputFieldJadwal> {
   String _startTime = "9:30";
   String _endTime =
       DateFormat("HH:mm", "id_ID").format(DateTime.now()).toString();
+  int _selectedColor = 0;
+  List<Mapel> mapelList = [];
 
   Future<void> _getDayFromUser(BuildContext context) async {
     List<String> daysOfWeek = [
@@ -105,7 +107,6 @@ class InputFieldJadwalState extends State<InputFieldJadwal> {
     }
   }
 
-  int _selectedColor = 0;
   Widget _colorPallete() {
     return Column(
       children: [
@@ -153,7 +154,6 @@ class InputFieldJadwalState extends State<InputFieldJadwal> {
     }
   }
 
-  List<Mapel> mapelList = [];
   _validateData() {
     if (_titlecontroller.text.isEmpty ||
         _classcontroller.text.isEmpty ||

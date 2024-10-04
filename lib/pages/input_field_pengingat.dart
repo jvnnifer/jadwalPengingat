@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'input_field_satuan/input_field_satuan.dart';
 import 'package:intl/intl.dart';
-
 import 'tugas_mapel.dart';
 import 'pengingat_otomatis.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 class InputFieldPengingat extends StatefulWidget {
-  const InputFieldPengingat({Key? key}) : super(key: key);
-
   @override
   InputFieldPengingatState createState() => InputFieldPengingatState();
 }
@@ -20,6 +19,9 @@ class InputFieldPengingatState extends State<InputFieldPengingat> {
   String _startTime = "9:30";
   String _endTime =
       DateFormat("HH:mm", "id_ID").format(DateTime.now()).toString();
+
+  List<Tugas> tugasList = [];
+  int _selectedColor = 0;
 
   Future<void> _getDateFromUser(BuildContext context) async {
     DateTime? _pickerDate = await showDatePicker(
@@ -34,6 +36,15 @@ class InputFieldPengingatState extends State<InputFieldPengingat> {
         _selectedDate = _pickerDate;
       });
     }
+  }
+
+  Future<void> _saveTugasToPreferences(List<Tugas> tugasList) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    List<String> tugasJsonList =
+        tugasList.map((tugas) => jsonEncode(tugas.toJson())).toList();
+
+    await prefs.setStringList('tugas_list', tugasJsonList);
   }
 
   _showTimePicker() async {
@@ -61,7 +72,6 @@ class InputFieldPengingatState extends State<InputFieldPengingat> {
     }
   }
 
-  int _selectedColor = 0;
   Widget _colorPallete() {
     return Column(
       children: [
@@ -117,7 +127,6 @@ class InputFieldPengingatState extends State<InputFieldPengingat> {
     20,
   ];
 
-  List<Tugas> tugasList = [];
   DateTime _convertToDateTime(String tanggal, String waktuMulai) {
     final DateTime parsedDate = DateFormat.yMd().parse(tanggal);
     final List<String> timeParts = waktuMulai.split(':');
@@ -128,7 +137,7 @@ class InputFieldPengingatState extends State<InputFieldPengingat> {
         parsedDate.year, parsedDate.month, parsedDate.day, hour, minute);
   }
 
-  _validateData() {
+  _validateData() async {
     if (_titlecontroller.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -159,10 +168,11 @@ class InputFieldPengingatState extends State<InputFieldPengingat> {
         tugasList.add(newTugas);
       });
 
+      await _saveTugasToPreferences(tugasList);
+
       Navigator.push(
         context,
-        MaterialPageRoute(
-            builder: (context) => PengingatOtomatisPage(tugasList: tugasList)),
+        MaterialPageRoute(builder: (context) => PengingatOtomatisPage()),
       );
       _titlecontroller.clear();
       _notecontroller.clear();

@@ -66,7 +66,7 @@ class SideBar extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => PengingatOtomatisPage(tugasList: [])),
+                    builder: (context) => PengingatOtomatisPage()),
               );
             },
           ),
