@@ -7,6 +7,7 @@ import 'dart:ui';
 import 'tugas_mapel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+// import 'notification_service.dart';
 
 class PengingatOtomatisPage extends StatefulWidget {
   final List<Tugas>? tugasList;
@@ -18,11 +19,14 @@ class PengingatOtomatisPage extends StatefulWidget {
 
 class _PengingatOtomatis extends State<PengingatOtomatisPage> {
   late List<Tugas> _tugasList;
+  // late NotificationService _notificationService;
 
   @override
   void initState() {
     super.initState();
     _tugasList = widget.tugasList ?? [];
+    // _notificationService = NotificationService();
+    // _notificationService.initNotification();
     _loadTugasFromPreferences();
   }
 
@@ -107,6 +111,12 @@ class _PengingatOtomatis extends State<PengingatOtomatisPage> {
             child: ListView.builder(
               itemCount: _tugasList.length,
               itemBuilder: (context, index) {
+                // _notificationService.scheduleNotification(
+                //   title: 'Pengingat: ${_tugasList[index].judul}',
+                //   body: 'Jangan lupa mengerjakan tugas',
+                //   scheduledNotificationDateTime:
+                //       DateTime.parse('${_tugasList[index].waktuMulai}'),
+                // );
                 return Card(
                   elevation: 0,
                   color: _tugasList[index].warna,
