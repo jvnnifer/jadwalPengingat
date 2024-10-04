@@ -3,57 +3,31 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 class NotificationService {
-  final FlutterLocalNotificationsPlugin notificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  static final _notification = FlutterLocalNotificationsPlugin();
 
-  Future<void> initNotification() async {
-    AndroidInitializationSettings initializationSettingsAndroid =
-        const AndroidInitializationSettings('@mipmap/ic_launcher');
-
-    var initializationSettings =
-        InitializationSettings(android: initializationSettingsAndroid);
-    await notificationsPlugin.initialize(initializationSettings,
-        onDidReceiveNotificationResponse:
-            (NotificationResponse notificationResponse) async {});
-  }
-
-  notificationDetails() {
-    return const NotificationDetails(
-      android: AndroidNotificationDetails(
-        'channelId',
-        'channelName',
-        importance: Importance.max,
-      ),
-    );
-  }
-
-  Future showNotification({
-    int id = 0,
-    String? title,
-    String? body,
-  }) async {
-    return notificationsPlugin.show(
-        id, title, body, await notificationDetails());
-  }
-
-  Future scheduleNotification(
-      {int id = 0,
-      String? title,
-      String? body,
-      required DateTime scheduledNotificationDateTime}) async {
+  static Future<void> init() async {
+    await _notification.initialize(const InitializationSettings(
+      android: AndroidInitializationSettings('mipmap/ic_launcher'),
+      iOS: DarwinInitializationSettings(),
+    ));
     tz.initializeTimeZones();
-    tz.setLocalLocation(tz.getLocation('Asia/Jakarta'));
-    return notificationsPlugin.zonedSchedule(
-        id,
+  }
+
+  static scheduledNotification(int index, String title, String body) async {
+    var androidDetails = AndroidNotificationDetails(
+        'important_notification', 'My Channel',
+        importance: Importance.high, priority: Priority.high);
+    var iOsDetails = const DarwinNotificationDetails();
+    var notificationDetails =
+        NotificationDetails(android: androidDetails, iOS: iOsDetails);
+    await _notification.zonedSchedule(
+        index,
         title,
         body,
-        tz.TZDateTime.from(
-          scheduledNotificationDateTime,
-          tz.local,
-        ),
-        await notificationDetails(),
-        androidAllowWhileIdle: true,
+        tz.TZDateTime.now(tz.local).add(const Duration(seconds: 1)),
+        notificationDetails,
         uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime);
+            UILocalNotificationDateInterpretation.absoluteTime,
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle);
   }
 }

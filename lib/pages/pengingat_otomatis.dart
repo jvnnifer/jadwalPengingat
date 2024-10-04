@@ -19,16 +19,18 @@ class PengingatOtomatisPage extends StatefulWidget {
 
 class _PengingatOtomatis extends State<PengingatOtomatisPage> {
   late List<Tugas> _tugasList;
-  late NotificationService _notificationService;
 
   @override
   void initState() {
     super.initState();
     _tugasList = widget.tugasList ?? [];
-    _notificationService = NotificationService();
-    _notificationService.initNotification();
-    _scheduleAllNotifications();
+    WidgetsFlutterBinding.ensureInitialized();
+    _initializeNotificationService();
     _loadTugasFromPreferences();
+  }
+
+  Future<void> _initializeNotificationService() async {
+    await NotificationService.init();
   }
 
   Future<void> _loadTugasFromPreferences() async {
@@ -40,19 +42,21 @@ class _PengingatOtomatis extends State<PengingatOtomatisPage> {
             .map((json) => Tugas.fromJson(jsonDecode(json)))
             .toList();
       });
+      _scheduleAllNotifications();
     }
   }
 
   void _scheduleAllNotifications() {
     for (int index = 0; index < _tugasList.length; index++) {
-      final DateTime scheduleTime = _convertToDateTime(
-          _tugasList[index].tanggal, _tugasList[index].waktuMulai);
+      // final DateTime scheduleTime = _convertToDateTime(
+      //     _tugasList[index].tanggal, _tugasList[index].waktuMulai);
 
       // Menjadwalkan notifikasi
-      _notificationService.scheduleNotification(
-        title: 'Penginga: ${_tugasList[index].judul}',
-        body: 'Jangan lupa mengerjakan tugas',
-        scheduledNotificationDateTime: scheduleTime,
+      NotificationService.scheduledNotification(
+        index,
+        'Pengingat: ${_tugasList[index].judul}',
+        'Jangan lupa mengerjakan tugas',
+        // scheduleTime,
       );
     }
   }
