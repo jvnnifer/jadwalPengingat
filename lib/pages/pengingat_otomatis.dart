@@ -38,6 +38,12 @@ class _PengingatOtomatis extends State<PengingatOtomatisPage> {
     }
   }
 
+  Future<void> _deleteAllTasksFromPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _tugasList.clear();
+    await prefs.remove('tugas_list');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -279,6 +285,12 @@ class _PengingatOtomatis extends State<PengingatOtomatisPage> {
                     // Edit pelajaran
                   } else if (value == 'delete_reminder') {
                     // Hapus pelajaran
+                    _deleteAllTasksFromPreferences();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PengingatOtomatisPage()),
+                    );
                   }
                 });
               },
