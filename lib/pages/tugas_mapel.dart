@@ -79,7 +79,7 @@ class Mapel {
       ruang: json['ruang'],
       waktuMulai: json['waktuMulai'],
       waktuSelesai: json['waktuSelesai'],
-      warna: json['warna'],
+      warna: Color(json['warna']),
     );
   }
 }
