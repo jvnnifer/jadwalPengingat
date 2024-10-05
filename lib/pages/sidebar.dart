@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jadwal_pelajaran_app/pages/home_page.dart';
+import 'package:jadwal_pelajaran_app/pages/kalender.dart';
 import 'package:jadwal_pelajaran_app/pages/pengingat_otomatis.dart';
 import 'jadwal_pelajaran.dart';
 import 'tugas_mapel.dart';
@@ -85,7 +86,13 @@ class SideBar extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.w500),
             ),
             tileColor: activePage == 'calendar' ? Colors.grey[300] : null,
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => Kalender()),
+              );
+            },
           ),
         ],
       ),
