@@ -17,6 +17,7 @@ class JadwalPelajaranPage extends StatefulWidget {
 class _JadwalPelajaran extends State<JadwalPelajaranPage> {
   late List<Mapel> _mapelList;
   int selectedDayIndex = 0;
+  final List<String> hari = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
 
   @override
   void initState() {
@@ -45,6 +46,10 @@ class _JadwalPelajaran extends State<JadwalPelajaranPage> {
 
   @override
   Widget build(BuildContext context) {
+    // List untuk filter mapel per hari
+    List<Mapel> filteredMapelList = _mapelList
+        .where((mapel) => mapel.hari == hari[selectedDayIndex])
+        .toList();
     return Scaffold(
       drawer: SideBar(
         activePage: 'schedule',
@@ -76,39 +81,18 @@ class _JadwalPelajaran extends State<JadwalPelajaranPage> {
               scrollDirection: Axis.horizontal,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: List.generate(5, (index) {
-                  String day;
-                  switch (index) {
-                    case 0:
-                      day = 'Senin';
-                      break;
-                    case 1:
-                      day = 'Selasa';
-                      break;
-                    case 2:
-                      day = 'Rabu';
-                      break;
-                    case 3:
-                      day = 'Kamis';
-                      break;
-                    case 4:
-                      day = 'Jumat';
-                      break;
-                    default:
-                      day = '';
-                  }
+                children: List.generate(hari.length, (index) {
                   return GestureDetector(
                     onTap: () {
                       setState(() {
-                        selectedDayIndex =
-                            index; // Set indeks hari yang dipilih
+                        selectedDayIndex = index;
                       });
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          day,
+                          hari[index],
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
@@ -117,8 +101,7 @@ class _JadwalPelajaran extends State<JadwalPelajaranPage> {
                                 : Colors.grey[400],
                           ),
                         ),
-                        if (selectedDayIndex ==
-                            index) // Tanda jika hari dipilih
+                        if (selectedDayIndex == index)
                           Container(
                             margin: EdgeInsets.only(top: 5),
                             height: 3,
@@ -140,11 +123,11 @@ class _JadwalPelajaran extends State<JadwalPelajaranPage> {
           // Card jadwal pelajaran
           Expanded(
             child: ListView.builder(
-              itemCount: _mapelList.length,
+              itemCount: filteredMapelList.length,
               itemBuilder: (context, index) {
                 return Card(
                   elevation: 0,
-                  color: _mapelList[index].warna,
+                  color: filteredMapelList[index].warna,
                   margin: EdgeInsets.all(10),
                   child: Padding(
                     padding: EdgeInsets.only(left: 20, top: 10, bottom: 10),
@@ -157,7 +140,7 @@ class _JadwalPelajaran extends State<JadwalPelajaranPage> {
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  _mapelList[index].judul,
+                                  filteredMapelList[index].judul,
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -177,7 +160,7 @@ class _JadwalPelajaran extends State<JadwalPelajaranPage> {
                                           color: Colors.white),
                                       SizedBox(width: 8),
                                       Text(
-                                        _mapelList[index].hari,
+                                        filteredMapelList[index].hari,
                                         style: TextStyle(
                                             color: Colors.white, fontSize: 15),
                                       ),
@@ -192,7 +175,7 @@ class _JadwalPelajaran extends State<JadwalPelajaranPage> {
                                           width:
                                               8), // Jarak antara ikon dan teks
                                       Text(
-                                        '${_mapelList[index].waktuMulai} - ${_mapelList[index].waktuSelesai}',
+                                        '${filteredMapelList[index].waktuMulai} - ${filteredMapelList[index].waktuSelesai}',
                                         style: TextStyle(
                                             color: Colors.white, fontSize: 15),
                                       ),
@@ -207,7 +190,7 @@ class _JadwalPelajaran extends State<JadwalPelajaranPage> {
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  _mapelList[index].pengajar,
+                                  filteredMapelList[index].pengajar,
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 15),
                                 ),
@@ -229,7 +212,7 @@ class _JadwalPelajaran extends State<JadwalPelajaranPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                _mapelList[index].ruang,
+                                filteredMapelList[index].ruang,
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 20,
