@@ -152,7 +152,7 @@ class _JadwalPelajaran extends State<JadwalPelajaranPage> {
                               ),
                               Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
@@ -173,7 +173,7 @@ class _JadwalPelajaran extends State<JadwalPelajaranPage> {
                                           color: Colors.white),
                                       SizedBox(
                                           width:
-                                              8), // Jarak antara ikon dan teks
+                                          8), // Jarak antara ikon dan teks
                                       Text(
                                         '${filteredMapelList[index].waktuMulai} - ${filteredMapelList[index].waktuSelesai}',
                                         style: TextStyle(

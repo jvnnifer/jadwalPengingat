@@ -164,7 +164,7 @@ class _PengingatOtomatis extends State<PengingatOtomatisPage> {
                               SizedBox(height: 10),
                               Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
@@ -328,6 +328,7 @@ class _PengingatOtomatis extends State<PengingatOtomatisPage> {
               backgroundColor: Colors.blue[400],
             ),
           ),
+
         ],
       ),
     );

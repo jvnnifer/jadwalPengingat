@@ -22,7 +22,7 @@ class InputFieldJadwalState extends State<InputFieldJadwal> {
   String _selectedDay = 'Senin';
   String _startTime = "9:30";
   String _endTime =
-      DateFormat("HH:mm", "id_ID").format(DateTime.now()).toString();
+  DateFormat("HH:mm", "id_ID").format(DateTime.now()).toString();
   int _selectedColor = 0;
 
   @override
@@ -107,7 +107,7 @@ class InputFieldJadwalState extends State<InputFieldJadwal> {
   Future<void> _saveMapelToPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> mapelJsonList =
-        mapelList.map((mapel) => jsonEncode(mapel.toJson())).toList();
+    mapelList.map((mapel) => jsonEncode(mapel.toJson())).toList();
     await prefs.setStringList('mapel_list', mapelJsonList);
   }
 
@@ -154,10 +154,10 @@ class InputFieldJadwalState extends State<InputFieldJadwal> {
                   backgroundColor: index == 0
                       ? Colors.blue
                       : index == 1
-                          ? Colors.pink
-                          : index == 2
-                              ? Colors.orange
-                              : Colors.grey,
+                      ? Colors.pink
+                      : index == 2
+                      ? Colors.orange
+                      : Colors.grey,
                   child: _selectedColor == index
                       ? Icon(Icons.done, color: Colors.white, size: 25)
                       : Container(),
@@ -264,7 +264,7 @@ class InputFieldJadwalState extends State<InputFieldJadwal> {
                           _getTimeFromUser(isStartTime: true);
                         },
                         icon:
-                            Icon(Icons.access_time_rounded, color: Colors.grey),
+                        Icon(Icons.access_time_rounded, color: Colors.grey),
                       ),
                     ),
                   ),
@@ -278,7 +278,7 @@ class InputFieldJadwalState extends State<InputFieldJadwal> {
                           _getTimeFromUser(isStartTime: false);
                         },
                         icon:
-                            Icon(Icons.access_time_rounded, color: Colors.grey),
+                        Icon(Icons.access_time_rounded, color: Colors.grey),
                       ),
                     ),
                   ),

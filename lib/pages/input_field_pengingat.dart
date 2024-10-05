@@ -28,7 +28,7 @@ class InputFieldPengingatState extends State<InputFieldPengingat> {
   DateTime _selectedDate = DateTime.now();
   String _startTime = "9:30";
   String _endTime =
-      DateFormat("HH:mm", "id_ID").format(DateTime.now()).toString();
+  DateFormat("HH:mm", "id_ID").format(DateTime.now()).toString();
 
   int _selectedColor = 0;
 
@@ -65,7 +65,7 @@ class InputFieldPengingatState extends State<InputFieldPengingat> {
   Future<void> _saveTugasToPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> tugasJsonList =
-        tugasList.map((tugas) => jsonEncode(tugas.toJson())).toList();
+    tugasList.map((tugas) => jsonEncode(tugas.toJson())).toList();
     await prefs.setStringList('tugas_list', tugasJsonList);
   }
 
@@ -112,10 +112,10 @@ class InputFieldPengingatState extends State<InputFieldPengingat> {
                   backgroundColor: index == 0
                       ? Colors.blue
                       : index == 1
-                          ? Colors.pink
-                          : index == 2
-                              ? Colors.orange
-                              : Colors.grey,
+                      ? Colors.pink
+                      : index == 2
+                      ? Colors.orange
+                      : Colors.grey,
                   child: _selectedColor == index
                       ? Icon(Icons.done, color: Colors.white, size: 25)
                       : Container(),
@@ -168,7 +168,7 @@ class InputFieldPengingatState extends State<InputFieldPengingat> {
         ),
       );
     } else if (_convertToDateTime(
-            DateFormat.yMd().format(_selectedDate), _startTime)
+        DateFormat.yMd().format(_selectedDate), _startTime)
         .isBefore(DateTime.now())) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -251,7 +251,7 @@ class InputFieldPengingatState extends State<InputFieldPengingat> {
                           _getTimeFromUser(isStartTime: true);
                         },
                         icon:
-                            Icon(Icons.access_time_rounded, color: Colors.grey),
+                        Icon(Icons.access_time_rounded, color: Colors.grey),
                       ),
                     ),
                   ),
@@ -265,7 +265,7 @@ class InputFieldPengingatState extends State<InputFieldPengingat> {
                           _getTimeFromUser(isStartTime: false);
                         },
                         icon:
-                            Icon(Icons.access_time_rounded, color: Colors.grey),
+                        Icon(Icons.access_time_rounded, color: Colors.grey),
                       ),
                     ),
                   ),

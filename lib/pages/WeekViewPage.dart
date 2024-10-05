@@ -61,7 +61,7 @@ class _WeekViewPageState extends State<WeekViewPage> {
         initialDisplayDate: selectedDate,
         todayHighlightColor: Colors.purple,
         // Ganti warna bulatan tanggal hari ini
-        showNavigationArrow: true,
+        // showNavigationArrow: true,
         // Panah navigasi
         onTap: (calendarTapDetails) {
           if (calendarTapDetails.targetElement ==
