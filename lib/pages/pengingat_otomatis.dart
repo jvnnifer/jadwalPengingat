@@ -25,12 +25,8 @@ class _PengingatOtomatis extends State<PengingatOtomatisPage> {
     super.initState();
     _tugasList = widget.tugasList ?? [];
     WidgetsFlutterBinding.ensureInitialized();
-    _initializeNotificationService();
+    NotificationService.init();
     _loadTugasFromPreferences();
-  }
-
-  Future<void> _initializeNotificationService() async {
-    await NotificationService.init();
   }
 
   Future<void> _loadTugasFromPreferences() async {
@@ -48,15 +44,15 @@ class _PengingatOtomatis extends State<PengingatOtomatisPage> {
 
   void _scheduleAllNotifications() {
     for (int index = 0; index < _tugasList.length; index++) {
-      // final DateTime scheduleTime = _convertToDateTime(
-      //     _tugasList[index].tanggal, _tugasList[index].waktuMulai);
+      final DateTime scheduleTime = _convertToDateTime(
+          _tugasList[index].tanggal, _tugasList[index].waktuMulai);
 
       // Menjadwalkan notifikasi
       NotificationService.scheduledNotification(
         index,
         'Pengingat: ${_tugasList[index].judul}',
-        'Jangan lupa mengerjakan tugas',
-        // scheduleTime,
+        'Jangan lupa mengerjakan tugas!',
+        scheduleTime,
       );
     }
   }

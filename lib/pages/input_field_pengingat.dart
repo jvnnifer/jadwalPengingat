@@ -8,8 +8,8 @@ import 'dart:convert';
 
 class InputFieldPengingat extends StatefulWidget {
   final List<Tugas>? tugasList;
-
   const InputFieldPengingat({super.key, this.tugasList});
+
   @override
   InputFieldPengingatState createState() => InputFieldPengingatState();
 }
@@ -47,6 +47,7 @@ class InputFieldPengingatState extends State<InputFieldPengingat> {
     }
   }
 
+  // untuk load dan save tugas yang diinputkan
   Future<void> _loadTugasFromPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String>? tugasJsonList = prefs.getStringList('tugas_list');
@@ -140,13 +141,13 @@ class InputFieldPengingatState extends State<InputFieldPengingat> {
     }
   }
 
-  int _selectedRemind = 5;
-  List<int> reminderList = [
-    5,
-    10,
-    15,
-    20,
-  ];
+  // int _selectedRemind = 5;
+  // List<int> reminderList = [
+  //   5,
+  //   10,
+  //   15,
+  //   20,
+  // ];
 
   DateTime _convertToDateTime(String tanggal, String waktuMulai) {
     final DateTime parsedDate = DateFormat.yMd().parse(tanggal);
@@ -270,23 +271,23 @@ class InputFieldPengingatState extends State<InputFieldPengingat> {
                   ),
                 ],
               ),
-              InputFieldSatuan(
-                judul: 'Ingatkan saya',
-                hint: "$_selectedRemind menit sebelum",
-                widget: DropdownButton(
-                  icon: Icon(Icons.keyboard_arrow_down, color: Colors.grey),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _selectedRemind = int.parse(newValue!);
-                    });
-                  },
-                  items:
-                      reminderList.map<DropdownMenuItem<String>>((int value) {
-                    return DropdownMenuItem<String>(
-                        value: value.toString(), child: Text(value.toString()));
-                  }).toList(),
-                ),
-              ),
+              // InputFieldSatuan(
+              //   judul: 'Ingatkan saya',
+              //   hint: "$_selectedRemind menit sebelum",
+              //   widget: DropdownButton(
+              //     icon: Icon(Icons.keyboard_arrow_down, color: Colors.grey),
+              //     onChanged: (String? newValue) {
+              //       setState(() {
+              //         _selectedRemind = int.parse(newValue!);
+              //       });
+              //     },
+              //     items:
+              //         reminderList.map<DropdownMenuItem<String>>((int value) {
+              //       return DropdownMenuItem<String>(
+              //           value: value.toString(), child: Text(value.toString()));
+              //     }).toList(),
+              //   ),
+              // ),
               Text(
                 'Pilih Warna',
                 style: TextStyle(fontWeight: FontWeight.w600),

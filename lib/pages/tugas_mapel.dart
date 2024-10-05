@@ -58,4 +58,28 @@ class Mapel {
     required this.waktuSelesai,
     required this.warna,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'judul': judul,
+      'hari': hari,
+      'pengajar': pengajar,
+      'ruang': ruang,
+      'waktuMulai': waktuMulai,
+      'waktuSelesai': waktuSelesai,
+      'warna': warna.value,
+    };
+  }
+
+  static Mapel fromJson(Map<String, dynamic> json) {
+    return Mapel(
+      judul: json['judul'],
+      hari: json['hari'],
+      pengajar: json['pengajar'],
+      ruang: json['ruang'],
+      waktuMulai: json['waktuMulai'],
+      waktuSelesai: json['waktuSelesai'],
+      warna: json['warna'],
+    );
+  }
 }
