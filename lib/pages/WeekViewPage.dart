@@ -35,7 +35,7 @@ class _WeekViewPageState extends State<WeekViewPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Month View'),
-                      Icon(Icons.calendar_today, color: Colors.purple),
+                      Icon(Icons.calendar_today, color: Colors.blue[700]),
                     ],
                   ),
                 ),
@@ -45,7 +45,7 @@ class _WeekViewPageState extends State<WeekViewPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Week View'),
-                      Icon(Icons.calendar_view_week, color: Colors.purple),
+                      Icon(Icons.calendar_view_week, color: Colors.blue[700]),
                     ],
                   ),
                 ),

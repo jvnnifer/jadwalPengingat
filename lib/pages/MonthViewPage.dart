@@ -73,6 +73,10 @@ class _MonthViewPageState extends State<MonthViewPage> {
             Expanded(
               child: SfCalendar(
                 view: CalendarView.month,
+                selectionDecoration: BoxDecoration(
+                  border: Border.all(
+                      color: Colors.transparent, width: 0), // No border
+                ),
                 initialDisplayDate: selectedDate,
                 monthViewSettings: MonthViewSettings(
                   appointmentDisplayMode: MonthAppointmentDisplayMode.indicator,
@@ -96,30 +100,23 @@ class _MonthViewPageState extends State<MonthViewPage> {
                   bool isToday = details.date.year == DateTime.now().year &&
                       details.date.month == DateTime.now().month &&
                       details.date.day == DateTime.now().day;
-                  return Theme(
-                    data: Theme.of(context).copyWith(
-                      highlightColor:
-                          Colors.transparent, // Menghilangkan efek highlight
-                      splashColor:
-                          Colors.transparent, // Menghilangkan efek splash
+                  return Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: isSelected
+                          ? Colors.lightBlue
+                          : (isToday
+                              ? Colors.purple
+                              : Colors
+                                  .transparent), // pakai warna ungu untuk hari ini
                     ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: isSelected
-                            ? Colors.lightBlue
-                            : (isToday
-                                ? Colors.purple
-                                : Colors.transparent), // Use purple for today
-                      ),
-                      child: Center(
-                        child: Text(
-                          details.date.day.toString(),
-                          style: TextStyle(
-                            color: isSelected || isToday
-                                ? Colors.white
-                                : Colors.black,
-                          ),
+                    child: Center(
+                      child: Text(
+                        details.date.day.toString(),
+                        style: TextStyle(
+                          color: isSelected || isToday
+                              ? Colors.white
+                              : Colors.black,
                         ),
                       ),
                     ),
