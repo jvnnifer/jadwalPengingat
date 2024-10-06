@@ -19,50 +19,52 @@ class _MonthViewPageState extends State<MonthViewPage> {
     return Scaffold(
       appBar: widget.showAppBar
           ? AppBar(
-        title: Text('Month'),
-        centerTitle: true,
-        actions: [
-          PopupMenuButton<String>(
-            onSelected: (value) {
-              if (value == 'week_view') {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => WeekViewPage(),
-                  ),
-                );
-              } else if (value == 'month_view') {
-                // If month view is selected, do nothing or you can handle accordingly
-                Navigator.pop(context); // Optionally go back to Month View
-              }
-            },
-            itemBuilder: (BuildContext context) {
-              return [
-                PopupMenuItem<String>(
-                  value: 'month_view',
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Month View'),
-                      Icon(Icons.calendar_today, color: Colors.purple),
-                    ],
-                  ),
+              title: Text('Month'),
+              centerTitle: true,
+              actions: [
+                PopupMenuButton<String>(
+                  onSelected: (value) {
+                    if (value == 'week_view') {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => WeekViewPage(),
+                        ),
+                      );
+                    } else if (value == 'month_view') {
+                      // If month view is selected, do nothing or you can handle accordingly
+                      Navigator.pop(
+                          context); // Optionally go back to Month View
+                    }
+                  },
+                  itemBuilder: (BuildContext context) {
+                    return [
+                      PopupMenuItem<String>(
+                        value: 'month_view',
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('Month View'),
+                            Icon(Icons.calendar_today, color: Colors.purple),
+                          ],
+                        ),
+                      ),
+                      PopupMenuItem<String>(
+                        value: 'week_view',
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('Week View'),
+                            Icon(Icons.calendar_view_week,
+                                color: Colors.purple),
+                          ],
+                        ),
+                      ),
+                    ];
+                  },
                 ),
-                PopupMenuItem<String>(
-                  value: 'week_view',
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Week View'),
-                      Icon(Icons.calendar_view_week, color: Colors.purple),
-                    ],
-                  ),
-                ),
-              ];
-            },
-          ),
-        ],
-      )
+              ],
+            )
           : null,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -77,7 +79,8 @@ class _MonthViewPageState extends State<MonthViewPage> {
                   showAgenda: true,
                 ),
                 onTap: (details) {
-                  if (details.targetElement == CalendarElement.calendarCell && details.date != null) {
+                  if (details.targetElement == CalendarElement.calendarCell &&
+                      details.date != null) {
                     DateTime selectedDate = details.date!;
                     setState(() {
                       if (selectedDates.isNotEmpty) {
@@ -87,23 +90,36 @@ class _MonthViewPageState extends State<MonthViewPage> {
                     });
                   }
                 },
-                monthCellBuilder: (BuildContext context, MonthCellDetails details) {
+                monthCellBuilder:
+                    (BuildContext context, MonthCellDetails details) {
                   bool isSelected = selectedDates.contains(details.date);
                   bool isToday = details.date.year == DateTime.now().year &&
                       details.date.month == DateTime.now().month &&
                       details.date.day == DateTime.now().day;
-
-                  return Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: isSelected ? Colors.lightBlue :
-                      (isToday ? Colors.purple : Colors.transparent), // Use purple for today
+                  return Theme(
+                    data: Theme.of(context).copyWith(
+                      highlightColor:
+                          Colors.transparent, // Menghilangkan efek highlight
+                      splashColor:
+                          Colors.transparent, // Menghilangkan efek splash
                     ),
-                    child: Center(
-                      child: Text(
-                        details.date.day.toString(),
-                        style: TextStyle(
-                          color: isSelected || isToday ? Colors.white : Colors.black,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: isSelected
+                            ? Colors.lightBlue
+                            : (isToday
+                                ? Colors.purple
+                                : Colors.transparent), // Use purple for today
+                      ),
+                      child: Center(
+                        child: Text(
+                          details.date.day.toString(),
+                          style: TextStyle(
+                            color: isSelected || isToday
+                                ? Colors.white
+                                : Colors.black,
+                          ),
                         ),
                       ),
                     ),

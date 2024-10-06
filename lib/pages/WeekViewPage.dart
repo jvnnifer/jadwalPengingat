@@ -1,7 +1,7 @@
 // Halaman untuk tampilan mingguan
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'MonthViewPage.dart'; // Ensure you have this file
+// import 'MonthViewPage.dart';
 
 class WeekViewPage extends StatefulWidget {
   @override
@@ -65,7 +65,8 @@ class _WeekViewPageState extends State<WeekViewPage> {
         // Panah navigasi
         onTap: (calendarTapDetails) {
           if (calendarTapDetails.targetElement ==
-              CalendarElement.calendarCell && calendarTapDetails.date != null) {
+                  CalendarElement.calendarCell &&
+              calendarTapDetails.date != null) {
             setState(() {
               selectedDate = calendarTapDetails.date!;
             });
@@ -75,26 +76,22 @@ class _WeekViewPageState extends State<WeekViewPage> {
     );
   }
 
-        // weekCellBuilder: (BuildContext context, WeekCellDetails details) {
-        //   bool isSelected = selectedDate.isAtSameMomentAs(details.date);
-        //   return Container(
-        //     decoration: BoxDecoration(
-        //       shape: BoxShape.circle,
-        //       color: isSelected ? Colors.lightBlue : Colors.transparent,
-        //     ),
-        //     child: Center(
-        //       child: Text(
-        //         details.date.day.toString(),
-        //         style: TextStyle(color: Colors.black),
-        //       ),
-        //     ),
-        //   );
-        // },
-
-  }
-
-
-
+  // weekCellBuilder: (BuildContext context, WeekCellDetails details) {
+  //   bool isSelected = selectedDate.isAtSameMomentAs(details.date);
+  //   return Container(
+  //     decoration: BoxDecoration(
+  //       shape: BoxShape.circle,
+  //       color: isSelected ? Colors.lightBlue : Colors.transparent,
+  //     ),
+  //     child: Center(
+  //       child: Text(
+  //         details.date.day.toString(),
+  //         style: TextStyle(color: Colors.black),
+  //       ),
+  //     ),
+  //   );
+  // },
+}
 
 // List<Appointment> getAppointments() {
 //   List<Appointment> meetings = <Appointment>[];

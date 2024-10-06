@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jadwal_pelajaran_app/pages/sidebar.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
+// import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'MonthViewPage.dart';
 import 'WeekViewPage.dart';
 
@@ -12,7 +12,7 @@ class Kalender extends StatefulWidget {
 }
 
 class _KalenderState extends State<Kalender> {
-  String selectedMonth = ''; // Store the selected month
+  String selectedMonth = ''; // mengembalikan bulan yang dipilih
 
   @override
   void initState() {
@@ -57,7 +57,7 @@ class _KalenderState extends State<Kalender> {
                             style: TextStyle(fontSize: 18),
                           ),
                           SizedBox(width: 8),
-                          Icon(Icons.calendar_today, color: Colors.purple),
+                          Icon(Icons.calendar_today, color: Colors.blue[700]),
                         ],
                       ),
                     ),
@@ -71,7 +71,8 @@ class _KalenderState extends State<Kalender> {
                             style: TextStyle(fontSize: 18),
                           ),
                           SizedBox(width: 8),
-                          Icon(Icons.calendar_view_week, color: Colors.purple),
+                          Icon(Icons.calendar_view_week,
+                              color: Colors.blue[700]),
                         ],
                       ),
                     ),
@@ -94,8 +95,11 @@ class _KalenderState extends State<Kalender> {
                   }
                 });
               },
-              child: Icon(Icons.menu, color: Colors.white,),
-              backgroundColor: Colors.purple[400], // Set FAB background color
+              child: Icon(
+                Icons.menu,
+                color: Colors.white,
+              ),
+              backgroundColor: Colors.blue[700],
             ),
           ),
         ],
