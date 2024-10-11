@@ -100,6 +100,9 @@ class _MonthViewPageState extends State<MonthViewPage> {
                   bool isToday = details.date.year == DateTime.now().year &&
                       details.date.month == DateTime.now().month &&
                       details.date.day == DateTime.now().day;
+                  int currentMonth = details
+                      .visibleDates[details.visibleDates.length ~/ 2].month;
+                  bool isCurrentMonth = details.date.month == currentMonth;
                   return Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
@@ -116,7 +119,7 @@ class _MonthViewPageState extends State<MonthViewPage> {
                         style: TextStyle(
                           color: isSelected || isToday
                               ? Colors.white
-                              : Colors.black,
+                              : (isCurrentMonth ? Colors.black : Colors.grey),
                         ),
                       ),
                     ),
