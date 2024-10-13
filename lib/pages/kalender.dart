@@ -1,14 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:jadwal_pelajaran_app/pages/sidebar.dart';
-// import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'MonthViewPage.dart';
 import 'WeekViewPage.dart';
+import 'tugas_mapel.dart';
+import 'package:intl/intl.dart';
 
 class Kalender extends StatefulWidget {
   const Kalender({super.key});
 
   @override
   State<Kalender> createState() => _KalenderState();
+}
+
+DateTime _convertToDateTime(String tanggal, String waktuMulai) {
+  final DateTime parsedDate = DateFormat.yMd().parse(tanggal);
+
+  final List<String> timeParts = waktuMulai.split(':');
+  final int hour = int.parse(timeParts[0]); // Jam
+  final int minute = int.parse(timeParts[1]); // Menit
+
+  return DateTime(
+      parsedDate.year, parsedDate.month, parsedDate.day, hour, minute);
+}
+
+List<Appointment> getAppointmentsFromTugas(List<Tugas> tugasList) {
+  List<Appointment> appointments = <Appointment>[];
+  for (var tugas in tugasList) {
+    DateTime startTime = _convertToDateTime(tugas.tanggal, tugas.waktuMulai);
+    DateTime endTime = _convertToDateTime(tugas.tanggal, tugas.waktuSelesai);
+
+    appointments.add(Appointment(
+      startTime: startTime,
+      endTime: endTime,
+      subject: tugas.judul,
+      color: tugas.warna,
+    ));
+  }
+  return appointments;
+}
+
+class MeetingDataSource extends CalendarDataSource {
+  MeetingDataSource(List<Appointment> source) {
+    appointments = source;
+  }
 }
 
 class _KalenderState extends State<Kalender> {

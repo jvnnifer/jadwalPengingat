@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'WeekViewPage.dart'; // Ensure you have this file
+import 'WeekViewPage.dart';
+import 'kalender.dart';
+import 'tugas_mapel.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 class MonthViewPage extends StatefulWidget {
   final bool showAppBar;
-  MonthViewPage({this.showAppBar = true});
+  final List<Tugas>? tugasList;
+  MonthViewPage({this.showAppBar = true, this.tugasList});
 
   @override
   State<MonthViewPage> createState() => _MonthViewPageState();
@@ -12,7 +17,27 @@ class MonthViewPage extends StatefulWidget {
 
 class _MonthViewPageState extends State<MonthViewPage> {
   List<DateTime> selectedDates = [];
-  DateTime selectedDate = DateTime.now(); // Store the selected date
+  DateTime selectedDate = DateTime.now();
+  late List<Tugas> _tugasList;
+
+  @override
+  void initState() {
+    super.initState();
+    _tugasList = widget.tugasList ?? [];
+    _loadTugasFromPreferences();
+  }
+
+  Future<void> _loadTugasFromPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? tugasJsonList = prefs.getStringList('tugas_list');
+    if (tugasJsonList != null) {
+      setState(() {
+        _tugasList = tugasJsonList
+            .map((json) => Tugas.fromJson(jsonDecode(json)))
+            .toList();
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +57,7 @@ class _MonthViewPageState extends State<MonthViewPage> {
                         ),
                       );
                     } else if (value == 'month_view') {
-                      // If month view is selected, do nothing or you can handle accordingly
-                      Navigator.pop(
-                          context); // Optionally go back to Month View
+                      Navigator.pop(context);
                     }
                   },
                   itemBuilder: (BuildContext context) {
@@ -73,6 +96,8 @@ class _MonthViewPageState extends State<MonthViewPage> {
             Expanded(
               child: SfCalendar(
                 view: CalendarView.month,
+                dataSource:
+                    MeetingDataSource(getAppointmentsFromTugas(_tugasList)),
                 selectionDecoration: BoxDecoration(
                   border: Border.all(
                       color: Colors.transparent, width: 0), // No border
