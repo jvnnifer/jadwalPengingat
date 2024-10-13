@@ -58,7 +58,7 @@ class _KalenderState extends State<Kalender> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: SideBar(
-        activePage: 'Kalender',
+        activePage: 'calendar',
       ),
       appBar: AppBar(
         title: Text(
@@ -80,7 +80,7 @@ class _KalenderState extends State<Kalender> {
               onPressed: () {
                 showMenu(
                   context: context,
-                  position: RelativeRect.fromLTRB(300.0, 600.0, 0.0, 0.0),
+                  position: RelativeRect.fromLTRB(300.0, 650.0, 0.0, 0.0),
                   items: [
                     PopupMenuItem(
                       value: 'month_view',
