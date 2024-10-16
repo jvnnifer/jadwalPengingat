@@ -7,7 +7,7 @@ class NotificationService {
 
   static init() {
     _notification.initialize(const InitializationSettings(
-      android: AndroidInitializationSettings('mipmap/ic_launcher'),
+      android: AndroidInitializationSettings('mipmap/launcher_icon'),
       iOS: DarwinInitializationSettings(),
     ));
     tz.initializeTimeZones();
