@@ -41,45 +41,37 @@ class Tugas {
 }
 
 class Mapel {
-  String judul;
-  String hari;
-  String pengajar;
-  String ruang;
-  String waktuMulai;
-  String waktuSelesai;
-  Color warna;
-
-  Mapel({
-    required this.judul,
-    required this.hari,
-    required this.pengajar,
-    required this.ruang,
-    required this.waktuMulai,
-    required this.waktuSelesai,
-    required this.warna,
-  });
-
-  Map<String, dynamic> toJson() {
-    return {
-      'judul': judul,
-      'hari': hari,
-      'pengajar': pengajar,
-      'ruang': ruang,
-      'waktuMulai': waktuMulai,
-      'waktuSelesai': waktuSelesai,
-      'warna': warna.value,
-    };
+  int? id;
+  String? judul;
+  String? hari;
+  String? pengajar;
+  String? ruang;
+  String? waktuMulai;
+  String? waktuSelesai;
+  int? warna;
+  mapelMap() {
+    var mapping = Map<String, dynamic>();
+    mapping['id'] = id ?? null;
+    mapping['judul'] = judul!;
+    mapping['hari'] = hari!;
+    mapping['pengajar'] = pengajar!;
+    mapping['ruang'] = ruang!;
+    mapping['waktuMulai'] = waktuMulai!;
+    mapping['waktuSelesai'] = waktuSelesai!;
+    mapping['warna'] = warna;
+    return mapping;
   }
 
-  static Mapel fromJson(Map<String, dynamic> json) {
-    return Mapel(
-      judul: json['judul'],
-      hari: json['hari'],
-      pengajar: json['pengajar'],
-      ruang: json['ruang'],
-      waktuMulai: json['waktuMulai'],
-      waktuSelesai: json['waktuSelesai'],
-      warna: Color(json['warna']),
-    );
+  Color convertColor(int index) {
+    switch (index) {
+      case 0:
+        return Colors.blue;
+      case 1:
+        return Colors.pink;
+      case 2:
+        return Colors.orange;
+      default:
+        return Colors.grey;
+    }
   }
 }

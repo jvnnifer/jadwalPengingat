@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'tugas_mapel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+import '../Services/tugas_mapel_services.dart';
 
 class InputFieldJadwal extends StatefulWidget {
   final List<Mapel>? mapelList;
@@ -18,17 +19,18 @@ class InputFieldJadwalState extends State<InputFieldJadwal> {
   final TextEditingController _titlecontroller = TextEditingController();
   final TextEditingController _teachercontroller = TextEditingController();
   final TextEditingController _classcontroller = TextEditingController();
-  late List<Mapel> mapelList;
+  late List<Mapel> mapelList = [];
+  var _mapelService = MapelService();
   String _selectedDay = 'Senin';
   String _startTime = "9:30";
   String _endTime =
-  DateFormat("HH:mm", "id_ID").format(DateTime.now()).toString();
+      DateFormat("HH:mm", "id_ID").format(DateTime.now()).toString();
   int _selectedColor = 0;
 
   @override
   void initState() {
     super.initState();
-    _loadMapelFromPreferences();
+    // _loadMapelFromPreferences();
   }
 
   Future<void> _getDayFromUser(BuildContext context) async {
@@ -90,26 +92,26 @@ class InputFieldJadwalState extends State<InputFieldJadwal> {
     }
   }
 
-  Future<void> _loadMapelFromPreferences() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? mapelJsonList = prefs.getStringList('mapel_list');
-    if (mapelJsonList != null) {
-      setState(() {
-        mapelList = mapelJsonList
-            .map((json) => Mapel.fromJson(jsonDecode(json)))
-            .toList();
-      });
-    } else {
-      mapelList = [];
-    }
-  }
+  // Future<void> _loadMapelFromPreferences() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   List<String>? mapelJsonList = prefs.getStringList('mapel_list');
+  //   if (mapelJsonList != null) {
+  //     setState(() {
+  //       mapelList = mapelJsonList
+  //           .map((json) => Mapel.fromJson(jsonDecode(json)))
+  //           .toList();
+  //     });
+  //   } else {
+  //     mapelList = [];
+  //   }
+  // }
 
-  Future<void> _saveMapelToPreferences() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> mapelJsonList =
-    mapelList.map((mapel) => jsonEncode(mapel.toJson())).toList();
-    await prefs.setStringList('mapel_list', mapelJsonList);
-  }
+  // Future<void> _saveMapelToPreferences() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   List<String> mapelJsonList =
+  //       mapelList.map((mapel) => jsonEncode(mapel.toJson())).toList();
+  //   await prefs.setStringList('mapel_list', mapelJsonList);
+  // }
 
   _showTimePicker() async {
     return await showTimePicker(
@@ -154,10 +156,10 @@ class InputFieldJadwalState extends State<InputFieldJadwal> {
                   backgroundColor: index == 0
                       ? Colors.blue
                       : index == 1
-                      ? Colors.pink
-                      : index == 2
-                      ? Colors.orange
-                      : Colors.grey,
+                          ? Colors.pink
+                          : index == 2
+                              ? Colors.orange
+                              : Colors.grey,
                   child: _selectedColor == index
                       ? Icon(Icons.done, color: Colors.white, size: 25)
                       : Container(),
@@ -195,21 +197,21 @@ class InputFieldJadwalState extends State<InputFieldJadwal> {
         ),
       );
     } else {
-      Mapel newMapel = Mapel(
-        judul: _titlecontroller.text,
-        hari: _selectedDay,
-        pengajar: _teachercontroller.text,
-        ruang: _classcontroller.text,
-        waktuMulai: _startTime,
-        waktuSelesai: _endTime,
-        warna: _getColor(_selectedColor),
-      );
+      var _mapel = Mapel();
+      _mapel.judul = _titlecontroller.text;
+      _mapel.hari = _selectedDay;
+      _mapel.pengajar = _teachercontroller.text;
+      _mapel.ruang = _classcontroller.text;
+      _mapel.waktuMulai = _startTime;
+      _mapel.waktuSelesai = _endTime;
+      _mapel.warna = _selectedColor;
+      var result = await _mapelService.SaveMapel(_mapel);
 
       setState(() {
-        mapelList.add(newMapel);
+        mapelList.add(result);
       });
 
-      await _saveMapelToPreferences();
+      // await _saveMapelToPreferences();
 
       Navigator.pushReplacement(
         context,
@@ -264,7 +266,7 @@ class InputFieldJadwalState extends State<InputFieldJadwal> {
                           _getTimeFromUser(isStartTime: true);
                         },
                         icon:
-                        Icon(Icons.access_time_rounded, color: Colors.grey),
+                            Icon(Icons.access_time_rounded, color: Colors.grey),
                       ),
                     ),
                   ),
@@ -278,7 +280,7 @@ class InputFieldJadwalState extends State<InputFieldJadwal> {
                           _getTimeFromUser(isStartTime: false);
                         },
                         icon:
-                        Icon(Icons.access_time_rounded, color: Colors.grey),
+                            Icon(Icons.access_time_rounded, color: Colors.grey),
                       ),
                     ),
                   ),
