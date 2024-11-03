@@ -6,7 +6,7 @@ import 'tugas_mapel.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 // import 'dart:convert';
 import '../Services/tugas_mapel_services.dart';
-import 'edit_delete_dialog.dart';
+import 'edit_delete/edit_delete_dialog.dart';
 
 class JadwalPelajaranPage extends StatefulWidget {
   final List<Mapel>? mapelList;
