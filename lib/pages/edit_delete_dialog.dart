@@ -119,6 +119,53 @@ class _EditMapelState extends State<EditMapel> {
     }
   }
 
+  _deleteFormDialog(BuildContext context, mapelId) {
+    return showDialog(
+        context: context,
+        builder: (param) {
+          return AlertDialog(
+            title: const Text(
+              'Yakin untuk menghapus?',
+              style: TextStyle(fontSize: 20),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () async {
+                    var result = await _mapelService.deleteMapel(mapelId);
+                    if (result != null) {
+                      int index = widget.mapelList
+                          .indexWhere((item) => item.id == mapelId);
+                      if (index != -1) {
+                        setState(() {
+                          widget.mapelList.removeAt(index);
+                        });
+                      }
+                      Navigator.pop(context);
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Mapel sudah terhapus'),
+                        ),
+                      );
+                    }
+                  },
+                  child: const Text(
+                    'Delete',
+                    style: TextStyle(color: Colors.red),
+                  )),
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text(
+                    'Close',
+                    style: TextStyle(color: Colors.black),
+                  ))
+            ],
+          );
+        });
+  }
+
   _validateData() async {
     if (_mapelTitleController.text.isEmpty ||
         _mapelClassController.text.isEmpty ||
@@ -172,10 +219,14 @@ class _EditMapelState extends State<EditMapel> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Icon(
-                    Icons.delete,
-                    color: Colors.red,
-                    size: 30,
+                  IconButton(
+                    onPressed: () {
+                      _deleteFormDialog(
+                        context,
+                        widget.mapel.id,
+                      );
+                    },
+                    icon: Icon(Icons.delete, color: Colors.red, size: 30),
                   ),
                 ],
               ),
