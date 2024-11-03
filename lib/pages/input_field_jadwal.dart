@@ -4,7 +4,7 @@ import 'input_field_satuan/input_field_satuan.dart';
 import 'package:intl/intl.dart';
 import 'tugas_mapel.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
-// import 'dart:convert';
+import 'dart:convert';
 import '../Services/tugas_mapel_services.dart';
 
 class InputFieldJadwal extends StatefulWidget {
@@ -206,12 +206,16 @@ class InputFieldJadwalState extends State<InputFieldJadwal> {
       _mapel.waktuSelesai = _endTime;
       _mapel.warna = _selectedColor;
       var result = await _mapelService.SaveMapel(_mapel);
+      if (result != null) {
+        _mapel.id = result;
+        setState(() {
+          mapelList.add(_mapel);
+        });
+      }
 
-      setState(() {
-        mapelList.add(result);
-      });
-
-      // await _saveMapelToPreferences();
+      // setState(() {
+      //   mapelList.add(result);
+      // });
 
       Navigator.pushReplacement(
         context,
