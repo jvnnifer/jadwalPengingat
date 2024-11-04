@@ -1,28 +1,28 @@
 import '/Helper/repository.dart';
 import '/pages/tugas_mapel.dart';
 
-// class TugasService {
-//   late Repository _repository;
-//   TugasService() {
-//     _repository = Repository();
-//   }
+class TugasService {
+  late Repository _repository;
+  TugasService() {
+    _repository = Repository();
+  }
 
-//   SaveTugas(Tugas tugas) async {
-//     return await _repository.insertData('user', tugas.tugasMap());
-//   }
+  SaveTugas(Tugas tugas) async {
+    return await _repository.insertData('tugas', tugas.tugasMap());
+  }
 
-//   readAllTugas() async {
-//     return await _repository.readData('tugas');
-//   }
+  readAllTugas() async {
+    return await _repository.readData('tugas');
+  }
 
-//   Updatetugas(Tugas tugas) async {
-//     return await _repository.updateData('tugas', tugas.tugasMap());
-//   }
+  UpdateTugas(Tugas tugas) async {
+    return await _repository.updateData('tugas', tugas.tugasMap());
+  }
 
-//   deletetugas(tugasId) async {
-//     return await _repository.deleteDataById('tugas', tugasId);
-//   }
-// }
+  deleteTugas(tugasId) async {
+    return await _repository.deleteDataById('tugas', tugasId);
+  }
+}
 
 class MapelService {
   late Repository _repository;
@@ -32,9 +32,6 @@ class MapelService {
 
   SaveMapel(Mapel mapel) async {
     return await _repository.insertData('mapel', mapel.mapelMap());
-    // int id = await _repository.insertData('mapel', mapel.mapelMap());
-    // mapel.id = id;
-    // return mapel;
   }
 
   readAllMapel() async {

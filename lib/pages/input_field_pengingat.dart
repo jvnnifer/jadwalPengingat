@@ -1,10 +1,13 @@
+// import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'input_field_satuan/input_field_satuan.dart';
 import 'package:intl/intl.dart';
 import 'tugas_mapel.dart';
 import 'pengingat_otomatis.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
+// import 'package:shared_preferences/shared_preferences.dart';
+// import 'dart:convert';
+import '../Services/tugas_mapel_services.dart';
 
 class InputFieldPengingat extends StatefulWidget {
   final List<Tugas>? tugasList;
@@ -15,11 +18,12 @@ class InputFieldPengingat extends StatefulWidget {
 }
 
 class InputFieldPengingatState extends State<InputFieldPengingat> {
-  late List<Tugas> tugasList;
+  late List<Tugas> tugasList = [];
+  var _tugasService = TugasService();
   @override
   void initState() {
     super.initState();
-    _loadTugasFromPreferences();
+    // _loadTugasFromPreferences();
   }
 
   final TextEditingController _titlecontroller = TextEditingController();
@@ -48,26 +52,26 @@ class InputFieldPengingatState extends State<InputFieldPengingat> {
   }
 
   // untuk load dan save tugas yang diinputkan
-  Future<void> _loadTugasFromPreferences() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? tugasJsonList = prefs.getStringList('tugas_list');
-    if (tugasJsonList != null) {
-      setState(() {
-        tugasList = tugasJsonList
-            .map((json) => Tugas.fromJson(jsonDecode(json)))
-            .toList();
-      });
-    } else {
-      tugasList = [];
-    }
-  }
+  // Future<void> _loadTugasFromPreferences() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   List<String>? tugasJsonList = prefs.getStringList('tugas_list');
+  //   if (tugasJsonList != null) {
+  //     setState(() {
+  //       tugasList = tugasJsonList
+  //           .map((json) => Tugas.fromJson(jsonDecode(json)))
+  //           .toList();
+  //     });
+  //   } else {
+  //     tugasList = [];
+  //   }
+  // }
 
-  Future<void> _saveTugasToPreferences() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> tugasJsonList =
-        tugasList.map((tugas) => jsonEncode(tugas.toJson())).toList();
-    await prefs.setStringList('tugas_list', tugasJsonList);
-  }
+  // Future<void> _saveTugasToPreferences() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   List<String> tugasJsonList =
+  //       tugasList.map((tugas) => jsonEncode(tugas.toJson())).toList();
+  //   await prefs.setStringList('tugas_list', tugasJsonList);
+  // }
 
   _showTimePicker() async {
     return await showTimePicker(
@@ -128,27 +132,6 @@ class InputFieldPengingatState extends State<InputFieldPengingat> {
     );
   }
 
-  Color _getColor(int index) {
-    switch (index) {
-      case 0:
-        return Colors.blue;
-      case 1:
-        return Colors.pink;
-      case 2:
-        return Colors.orange;
-      default:
-        return Colors.grey;
-    }
-  }
-
-  // int _selectedRemind = 5;
-  // List<int> reminderList = [
-  //   5,
-  //   10,
-  //   15,
-  //   20,
-  // ];
-
   DateTime _convertToDateTime(String tanggal, String waktuMulai) {
     final DateTime parsedDate = DateFormat.yMd().parse(tanggal);
     final List<String> timeParts = waktuMulai.split(':');
@@ -177,20 +160,20 @@ class InputFieldPengingatState extends State<InputFieldPengingat> {
         ),
       );
     } else {
-      Tugas newTugas = Tugas(
-        judul: _titlecontroller.text,
-        note: _notecontroller.text,
-        tanggal: DateFormat.yMd().format(_selectedDate),
-        waktuMulai: _startTime,
-        waktuSelesai: _endTime,
-        warna: _getColor(_selectedColor),
-      );
-
-      setState(() {
-        tugasList.add(newTugas);
-      });
-
-      await _saveTugasToPreferences();
+      var _tugas = Tugas();
+      _tugas.judul = _titlecontroller.text;
+      _tugas.note = _notecontroller.text;
+      _tugas.tanggal = DateFormat.yMd().format(_selectedDate);
+      _tugas.waktuMulai = _startTime;
+      _tugas.waktuSelesai = _endTime;
+      _tugas.warna = _selectedColor;
+      var result = await _tugasService.SaveTugas(_tugas);
+      if (result != null) {
+        _tugas.id = result;
+        setState(() {
+          tugasList.add(_tugas);
+        });
+      }
 
       Navigator.pushReplacement(
         context,

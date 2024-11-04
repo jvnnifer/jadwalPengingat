@@ -4,7 +4,7 @@ import 'input_field_satuan/input_field_satuan.dart';
 import 'package:intl/intl.dart';
 import 'tugas_mapel.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
+// import 'dart:convert';
 import '../Services/tugas_mapel_services.dart';
 
 class InputFieldJadwal extends StatefulWidget {
@@ -170,19 +170,6 @@ class InputFieldJadwalState extends State<InputFieldJadwal> {
         ),
       ],
     );
-  }
-
-  Color _getColor(int index) {
-    switch (index) {
-      case 0:
-        return Colors.blue;
-      case 1:
-        return Colors.pink;
-      case 2:
-        return Colors.orange;
-      default:
-        return Colors.grey;
-    }
   }
 
   _validateData() async {

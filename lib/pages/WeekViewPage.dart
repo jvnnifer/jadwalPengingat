@@ -20,21 +20,21 @@ class _WeekViewPageState extends State<WeekViewPage> {
   @override
   void initState() {
     super.initState();
-    _tugasList = widget.tugasList ?? [];
-    _loadTugasFromPreferences();
+    // _tugasList = widget.tugasList ?? [];
+    // _loadTugasFromPreferences();
   }
 
-  Future<void> _loadTugasFromPreferences() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? tugasJsonList = prefs.getStringList('tugas_list');
-    if (tugasJsonList != null) {
-      setState(() {
-        _tugasList = tugasJsonList
-            .map((json) => Tugas.fromJson(jsonDecode(json)))
-            .toList();
-      });
-    }
-  }
+  // Future<void> _loadTugasFromPreferences() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   List<String>? tugasJsonList = prefs.getStringList('tugas_list');
+  //   if (tugasJsonList != null) {
+  //     setState(() {
+  //       _tugasList = tugasJsonList
+  //           .map((json) => Tugas.fromJson(jsonDecode(json)))
+  //           .toList();
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +81,7 @@ class _WeekViewPageState extends State<WeekViewPage> {
       ),
       body: SfCalendar(
         view: CalendarView.week,
-        dataSource: MeetingDataSource(getAppointmentsFromTugas(_tugasList)),
+        // dataSource: MeetingDataSource(getAppointmentsFromTugas(_tugasList)),
         // Tampilkan kalender dengan tampilan mingguan
         firstDayOfWeek: 1,
         initialDisplayDate: selectedDate,
