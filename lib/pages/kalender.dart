@@ -13,38 +13,38 @@ class Kalender extends StatefulWidget {
   State<Kalender> createState() => _KalenderState();
 }
 
-// DateTime _convertToDateTime(String tanggal, String waktuMulai) {
-//   final DateTime parsedDate = DateFormat.yMd().parse(tanggal);
+DateTime _convertToDateTime(String tanggal, String waktuMulai) {
+  final DateTime parsedDate = DateFormat.yMd().parse(tanggal);
 
-//   final List<String> timeParts = waktuMulai.split(':');
-//   final int hour = int.parse(timeParts[0]); // Jam
-//   final int minute = int.parse(timeParts[1]); // Menit
+  final List<String> timeParts = waktuMulai.split(':');
+  final int hour = int.parse(timeParts[0]); // Jam
+  final int minute = int.parse(timeParts[1]); // Menit
 
-//   return DateTime(
-//       parsedDate.year, parsedDate.month, parsedDate.day, hour, minute);
-// }
+  return DateTime(
+      parsedDate.year, parsedDate.month, parsedDate.day, hour, minute);
+}
 
-// List<Appointment> getAppointmentsFromTugas(List<Tugas> tugasList) {
-//   List<Appointment> appointments = <Appointment>[];
-//   for (var tugas in tugasList) {
-//     DateTime startTime = _convertToDateTime(tugas.tanggal, tugas.waktuMulai);
-//     DateTime endTime = _convertToDateTime(tugas.tanggal, tugas.waktuSelesai);
+List<Appointment> getAppointmentsFromTugas(List<Tugas> tugasList) {
+  List<Appointment> appointments = <Appointment>[];
+  for (var tugas in tugasList) {
+    DateTime startTime = _convertToDateTime(tugas.tanggal!, tugas.waktuMulai!);
+    DateTime endTime = _convertToDateTime(tugas.tanggal!, tugas.waktuSelesai!);
 
-//     appointments.add(Appointment(
-//       startTime: startTime,
-//       endTime: endTime,
-//       subject: tugas.judul,
-//       color: tugas.warna,
-//     ));
-//   }
-//   return appointments;
-// }
+    appointments.add(Appointment(
+      startTime: startTime,
+      endTime: endTime,
+      subject: tugas.judul!,
+      color: tugas.convertColor(tugas.warna!),
+    ));
+  }
+  return appointments;
+}
 
-// class MeetingDataSource extends CalendarDataSource {
-//   MeetingDataSource(List<Appointment> source) {
-//     appointments = source;
-//   }
-// }
+class MeetingDataSource extends CalendarDataSource {
+  MeetingDataSource(List<Appointment> source) {
+    appointments = source;
+  }
+}
 
 class _KalenderState extends State<Kalender> {
   String selectedMonth = ''; // mengembalikan bulan yang dipilih
@@ -70,7 +70,9 @@ class _KalenderState extends State<Kalender> {
         ),
         centerTitle: true,
       ),
-      body: MonthViewPage(showAppBar: false),
+      body: MonthViewPage(
+        showAppBar: false,
+      ),
       floatingActionButton: Stack(
         children: [
           Positioned(

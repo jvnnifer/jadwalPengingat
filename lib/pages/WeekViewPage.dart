@@ -5,6 +5,7 @@ import 'tugas_mapel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'kalender.dart';
+import '../Services/tugas_mapel_services.dart';
 
 class WeekViewPage extends StatefulWidget {
   final List<Tugas>? tugasList;
@@ -16,12 +17,31 @@ class WeekViewPage extends StatefulWidget {
 class _WeekViewPageState extends State<WeekViewPage> {
   DateTime selectedDate = DateTime.now(); // Menyimpan tanggal yang dipilih
   late List<Tugas> _tugasList;
+  final _tugasService = TugasService();
+
+  getAllTugasDetails() async {
+    var allTugas = await _tugasService.readAllTugas();
+    _tugasList = <Tugas>[];
+    allTugas.forEach((tugas) {
+      setState(() {
+        var tugasModel = Tugas();
+        tugasModel.id = tugas['id'];
+        tugasModel.judul = tugas['judul'];
+        tugasModel.note = tugas['note'];
+        tugasModel.tanggal = tugas['tanggal'];
+        tugasModel.waktuMulai = tugas['waktuMulai'];
+        tugasModel.waktuSelesai = tugas['waktuSelesai'];
+        tugasModel.warna = tugas['warna'];
+        _tugasList.add(tugasModel);
+      });
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    // _tugasList = widget.tugasList ?? [];
-    // _loadTugasFromPreferences();
+    _tugasList = widget.tugasList ?? [];
+    getAllTugasDetails();
   }
 
   // Future<void> _loadTugasFromPreferences() async {
@@ -81,7 +101,7 @@ class _WeekViewPageState extends State<WeekViewPage> {
       ),
       body: SfCalendar(
         view: CalendarView.week,
-        // dataSource: MeetingDataSource(getAppointmentsFromTugas(_tugasList)),
+        dataSource: MeetingDataSource(getAppointmentsFromTugas(_tugasList)),
         // Tampilkan kalender dengan tampilan mingguan
         firstDayOfWeek: 1,
         initialDisplayDate: selectedDate,

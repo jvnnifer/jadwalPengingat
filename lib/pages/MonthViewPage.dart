@@ -5,6 +5,7 @@ import 'kalender.dart';
 import 'tugas_mapel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+import '../Services/tugas_mapel_services.dart';
 
 class MonthViewPage extends StatefulWidget {
   final bool showAppBar;
@@ -18,13 +19,32 @@ class MonthViewPage extends StatefulWidget {
 class _MonthViewPageState extends State<MonthViewPage> {
   List<DateTime> selectedDates = [];
   DateTime selectedDate = DateTime.now();
-  late List<Tugas> _tugasList;
+  late List<Tugas> _tugasList = <Tugas>[];
+  final _tugasService = TugasService();
+
+  getAllTugasDetails() async {
+    var allTugas = await _tugasService.readAllTugas();
+    _tugasList = <Tugas>[];
+    allTugas.forEach((tugas) {
+      setState(() {
+        var tugasModel = Tugas();
+        tugasModel.id = tugas['id'];
+        tugasModel.judul = tugas['judul'];
+        tugasModel.note = tugas['note'];
+        tugasModel.tanggal = tugas['tanggal'];
+        tugasModel.waktuMulai = tugas['waktuMulai'];
+        tugasModel.waktuSelesai = tugas['waktuSelesai'];
+        tugasModel.warna = tugas['warna'];
+        _tugasList.add(tugasModel);
+      });
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    // _tugasList = widget.tugasList ?? [];
-    // _loadTugasFromPreferences();
+    _tugasList = widget.tugasList ?? [];
+    getAllTugasDetails();
   }
 
   // Future<void> _loadTugasFromPreferences() async {
@@ -96,8 +116,8 @@ class _MonthViewPageState extends State<MonthViewPage> {
             Expanded(
               child: SfCalendar(
                 view: CalendarView.month,
-                // dataSource:
-                //     MeetingDataSource(getAppointmentsFromTugas(_tugasList)),
+                dataSource:
+                    MeetingDataSource(getAppointmentsFromTugas(_tugasList)),
                 selectionDecoration: BoxDecoration(
                   border: Border.all(
                       color: Colors.transparent, width: 0), // No border

@@ -39,6 +39,7 @@ class _PengingatOtomatis extends State<PengingatOtomatisPage> {
         _tugasList.add(tugasModel);
       });
     });
+    _scheduleAllNotifications();
   }
 
   @override
@@ -64,20 +65,20 @@ class _PengingatOtomatis extends State<PengingatOtomatisPage> {
   //   }
   // }
 
-  // void _scheduleAllNotifications() {
-  //   for (int index = 0; index < _tugasList.length; index++) {
-  //     final DateTime scheduleTime = _convertToDateTime(
-  //         _tugasList[index].tanggal, _tugasList[index].waktuMulai);
+  void _scheduleAllNotifications() {
+    for (int index = 0; index < _tugasList.length; index++) {
+      final DateTime scheduleTime = _convertToDateTime(
+          _tugasList[index].tanggal!, _tugasList[index].waktuMulai!);
 
-  //     // Menjadwalkan notifikasi
-  //     NotificationService.scheduledNotification(
-  //       index,
-  //       'Pengingat: ${_tugasList[index].judul}',
-  //       'Jangan lupa mengerjakan tugas!',
-  //       scheduleTime,
-  //     );
-  //   }
-  // }
+      // Menjadwalkan notifikasi
+      NotificationService.scheduledNotification(
+        index,
+        'Pengingat: ${_tugasList[index].judul}',
+        'Jangan lupa mengerjakan tugas!',
+        scheduleTime,
+      );
+    }
+  }
 
   DateTime _convertToDateTime(String tanggal, String waktuMulai) {
     final DateTime parsedDate = DateFormat.yMd().parse(tanggal);
