@@ -5,7 +5,7 @@ import 'input_field_satuan/input_field_satuan.dart';
 import 'package:intl/intl.dart';
 import 'tugas_mapel.dart';
 import 'pengingat_otomatis.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // import 'dart:convert';
 import '../Services/tugas_mapel_services.dart';
 
@@ -160,6 +160,12 @@ class InputFieldPengingatState extends State<InputFieldPengingat> {
         ),
       );
     } else {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      int? userId = prefs.getInt('userId');
+
+      if (userId == null) {
+        return;
+      }
       var _tugas = Tugas();
       _tugas.judul = _titlecontroller.text;
       _tugas.note = _notecontroller.text;
@@ -167,6 +173,7 @@ class InputFieldPengingatState extends State<InputFieldPengingat> {
       _tugas.waktuMulai = _startTime;
       _tugas.waktuSelesai = _endTime;
       _tugas.warna = _selectedColor;
+      _tugas.userId = userId;
       var result = await _tugasService.SaveTugas(_tugas);
       if (result != null) {
         _tugas.id = result;

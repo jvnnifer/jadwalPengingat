@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'tugas_mapel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
+// import 'dart:convert';
 import 'kalender.dart';
 import '../Services/tugas_mapel_services.dart';
 
@@ -19,21 +19,29 @@ class _WeekViewPageState extends State<WeekViewPage> {
   late List<Tugas> _tugasList;
   final _tugasService = TugasService();
 
+  Future<int?> getUserIdFromPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('userId');
+  }
+
   getAllTugasDetails() async {
+    int? currentUserId = await getUserIdFromPreferences();
     var allTugas = await _tugasService.readAllTugas();
     _tugasList = <Tugas>[];
     allTugas.forEach((tugas) {
-      setState(() {
-        var tugasModel = Tugas();
-        tugasModel.id = tugas['id'];
-        tugasModel.judul = tugas['judul'];
-        tugasModel.note = tugas['note'];
-        tugasModel.tanggal = tugas['tanggal'];
-        tugasModel.waktuMulai = tugas['waktuMulai'];
-        tugasModel.waktuSelesai = tugas['waktuSelesai'];
-        tugasModel.warna = tugas['warna'];
-        _tugasList.add(tugasModel);
-      });
+      if (tugas['userId'] == currentUserId) {
+        setState(() {
+          var tugasModel = Tugas();
+          tugasModel.id = tugas['id'];
+          tugasModel.judul = tugas['judul'];
+          tugasModel.note = tugas['note'];
+          tugasModel.tanggal = tugas['tanggal'];
+          tugasModel.waktuMulai = tugas['waktuMulai'];
+          tugasModel.waktuSelesai = tugas['waktuSelesai'];
+          tugasModel.warna = tugas['warna'];
+          _tugasList.add(tugasModel);
+        });
+      }
     });
   }
 

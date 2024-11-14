@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'edit_delete/edit_delete_tugas.dart';
 import 'dart:ui';
 import 'tugas_mapel.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // import 'dart:convert';
 import 'notification_service.dart';
 
@@ -23,21 +23,30 @@ class _PengingatOtomatis extends State<PengingatOtomatisPage> {
   late List<Tugas> _tugasList = <Tugas>[];
   final _tugasService = TugasService();
 
+  Future<int?> getUserIdFromPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('userId');
+  }
+
   getAllTugasDetails() async {
+    int? currentUserId = await getUserIdFromPreferences();
     var allTugas = await _tugasService.readAllTugas();
     _tugasList = <Tugas>[];
     allTugas.forEach((tugas) {
-      setState(() {
-        var tugasModel = Tugas();
-        tugasModel.id = tugas['id'];
-        tugasModel.judul = tugas['judul'];
-        tugasModel.note = tugas['note'];
-        tugasModel.tanggal = tugas['tanggal'];
-        tugasModel.waktuMulai = tugas['waktuMulai'];
-        tugasModel.waktuSelesai = tugas['waktuSelesai'];
-        tugasModel.warna = tugas['warna'];
-        _tugasList.add(tugasModel);
-      });
+      if (tugas['userId'] == currentUserId) {
+        setState(() {
+          var tugasModel = Tugas();
+          tugasModel.id = tugas['id'];
+          tugasModel.judul = tugas['judul'];
+          tugasModel.note = tugas['note'];
+          tugasModel.tanggal = tugas['tanggal'];
+          tugasModel.waktuMulai = tugas['waktuMulai'];
+          tugasModel.waktuSelesai = tugas['waktuSelesai'];
+          tugasModel.warna = tugas['warna'];
+          tugasModel.userId = tugas['userId'];
+          _tugasList.add(tugasModel);
+        });
+      }
     });
     _scheduleAllNotifications();
   }

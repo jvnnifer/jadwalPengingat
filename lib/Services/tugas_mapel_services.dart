@@ -46,3 +46,17 @@ class MapelService {
     return await _repository.deleteDataById('mapel', mapelId);
   }
 }
+
+class UserService {
+  late Repository _repository;
+  UserService() {
+    _repository = Repository();
+  }
+  SaveUser(User user) async {
+    return await _repository.insertData('user', user.userMap());
+  }
+
+  readAllUser() async {
+    return await _repository.readData('user');
+  }
+}

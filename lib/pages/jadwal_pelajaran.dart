@@ -3,7 +3,7 @@ import 'sidebar.dart';
 import 'input_field_jadwal.dart';
 import 'dart:ui';
 import 'tugas_mapel.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // import 'dart:convert';
 import '../Services/tugas_mapel_services.dart';
 import 'edit_delete/edit_delete_mapel.dart';
@@ -22,22 +22,31 @@ class _JadwalPelajaran extends State<JadwalPelajaranPage> {
   int selectedDayIndex = 0;
   final List<String> hari = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
 
+  Future<int?> getUserIdFromPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('userId');
+  }
+
   getAllMapelDetails() async {
+    int? currentUserId = await getUserIdFromPreferences();
     var mapels = await _mapelService.readAllMapel();
     _mapelList = <Mapel>[];
     mapels.forEach((mapel) {
-      setState(() {
-        var mapelModel = Mapel();
-        mapelModel.id = mapel['id'];
-        mapelModel.judul = mapel['judul'];
-        mapelModel.hari = mapel['hari'];
-        mapelModel.pengajar = mapel['pengajar'];
-        mapelModel.ruang = mapel['ruang'];
-        mapelModel.waktuMulai = mapel['waktuMulai'];
-        mapelModel.waktuSelesai = mapel['waktuSelesai'];
-        mapelModel.warna = mapel['warna'];
-        _mapelList.add(mapelModel);
-      });
+      if (mapel['userId'] == currentUserId) {
+        setState(() {
+          var mapelModel = Mapel();
+          mapelModel.id = mapel['id'];
+          mapelModel.judul = mapel['judul'];
+          mapelModel.hari = mapel['hari'];
+          mapelModel.pengajar = mapel['pengajar'];
+          mapelModel.ruang = mapel['ruang'];
+          mapelModel.waktuMulai = mapel['waktuMulai'];
+          mapelModel.waktuSelesai = mapel['waktuSelesai'];
+          mapelModel.warna = mapel['warna'];
+          mapelModel.userId = mapel['userId'];
+          _mapelList.add(mapelModel);
+        });
+      }
     });
   }
 

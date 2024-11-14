@@ -8,6 +8,7 @@ class Tugas {
   String? waktuMulai;
   String? waktuSelesai;
   int? warna;
+  int? userId;
   tugasMap() {
     var mapping = Map<String, dynamic>();
     mapping['id'] = id ?? null;
@@ -17,6 +18,7 @@ class Tugas {
     mapping['waktuMulai'] = waktuMulai!;
     mapping['waktuSelesai'] = waktuSelesai!;
     mapping['warna'] = warna;
+    mapping['userId'] = userId;
     return mapping;
   }
 
@@ -43,6 +45,7 @@ class Mapel {
   String? waktuMulai;
   String? waktuSelesai;
   int? warna;
+  int? userId;
   mapelMap() {
     var mapping = Map<String, dynamic>();
     mapping['id'] = id ?? null;
@@ -53,6 +56,7 @@ class Mapel {
     mapping['waktuMulai'] = waktuMulai!;
     mapping['waktuSelesai'] = waktuSelesai!;
     mapping['warna'] = warna;
+    mapping['userId'] = userId;
     return mapping;
   }
 
@@ -67,5 +71,19 @@ class Mapel {
       default:
         return Colors.grey;
     }
+  }
+}
+
+class User {
+  int? userId;
+  String? username;
+  String? password;
+
+  userMap() {
+    var mapping = Map<String, dynamic>();
+    mapping['userId'] = userId ?? null;
+    mapping['username'] = username;
+    mapping['password'] = password;
+    return mapping;
   }
 }

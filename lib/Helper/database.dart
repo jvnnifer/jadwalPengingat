@@ -15,12 +15,16 @@ class DatabaseConnection {
   }
 
   Future<void> _createDatabase(Database database, int version) async {
+    String user =
+        "CREATE TABLE user(userId INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, password TEXT NOT NULL);";
+    await database.execute(user);
+
     String tugas =
-        "CREATE TABLE tugas(id INTEGER PRIMARY KEY AUTOINCREMENT, judul TEXT NOT NULL, note TEXT, tanggal DATE, waktuMulai DATETIME, waktuSelesai DATETIME, warna INTEGER);";
+        "CREATE TABLE tugas(id INTEGER PRIMARY KEY AUTOINCREMENT, judul TEXT NOT NULL, note TEXT, tanggal DATE, waktuMulai DATETIME, waktuSelesai DATETIME, warna INTEGER, userId INTEGER, FOREIGN KEY(userId) REFERENCES user(userId) ON DELETE CASCADE);";
     await database.execute(tugas);
 
     String mapel =
-        "CREATE TABLE mapel(id INTEGER PRIMARY KEY AUTOINCREMENT, judul TEXT NOT NULL, hari TEXT, pengajar TEXT, ruang TEXT, waktuMulai DATETIME, waktuSelesai DATETIME, warna INTEGER);";
+        "CREATE TABLE mapel(id INTEGER PRIMARY KEY AUTOINCREMENT, judul TEXT NOT NULL, hari TEXT, pengajar TEXT, ruang TEXT, waktuMulai DATETIME, waktuSelesai DATETIME, warna INTEGER, userId INTEGER, FOREIGN KEY(userId) REFERENCES user(userId) ON DELETE CASCADE);";
     await database.execute(mapel);
   }
 }

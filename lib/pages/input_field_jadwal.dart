@@ -3,7 +3,7 @@ import 'package:jadwal_pelajaran_app/pages/jadwal_pelajaran.dart';
 import 'input_field_satuan/input_field_satuan.dart';
 import 'package:intl/intl.dart';
 import 'tugas_mapel.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // import 'dart:convert';
 import '../Services/tugas_mapel_services.dart';
 
@@ -184,6 +184,12 @@ class InputFieldJadwalState extends State<InputFieldJadwal> {
         ),
       );
     } else {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      int? userId = prefs.getInt('userId');
+
+      if (userId == null) {
+        return;
+      }
       var _mapel = Mapel();
       _mapel.judul = _titlecontroller.text;
       _mapel.hari = _selectedDay;
@@ -192,6 +198,7 @@ class InputFieldJadwalState extends State<InputFieldJadwal> {
       _mapel.waktuMulai = _startTime;
       _mapel.waktuSelesai = _endTime;
       _mapel.warna = _selectedColor;
+      _mapel.userId = userId;
       var result = await _mapelService.SaveMapel(_mapel);
       if (result != null) {
         _mapel.id = result;
