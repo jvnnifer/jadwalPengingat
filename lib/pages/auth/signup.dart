@@ -62,11 +62,28 @@ class _SignUpState extends State<SignUp> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const ListTile(
-                    title: Text(
-                      "Masukkan akun baru",
-                      style:
-                          TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+                  ListTile(
+                    title: RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: "Ingat",
+                            style: TextStyle(
+                              fontSize: 40,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blue,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "In",
+                            style: TextStyle(
+                              fontSize: 40,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.pinkAccent,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Container(
